@@ -1,23 +1,5 @@
 [
   {
-    "title": "Building Faster WordPress Websites Without Losing Flexibility",
-    "slug": "building-faster-wordpress-websites",
-    "excerpt": "A practical look at balancing custom WordPress editing flexibility with clean frontend performance and maintainable structure.",
-    "date": "2026-09-30",
-    "author": "Ahsanul Haque Chowdhury",
-    "image": "/uploads/1790887148141-0139bbc7-gig-photo.jpg",
-    "imageAlt": "Ahsanul Haque Chowdhury discussing WordPress development and performance",
-    "imageTitle": "WordPress Performance by Ahsanul Haque Chowdhury",
-    "metaTitle": "Faster WordPress Websites | Ahsanul Haque Chowdhury",
-    "metaDescription": "Learn how Ahsanul Haque Chowdhury approaches faster WordPress websites with flexible editing, clean structure, and practical performance improvements.",
-    "tags": [
-      "WordPress",
-      "Performance",
-      "Web Development"
-    ],
-    "content": "A fast WordPress website does not need to sacrifice a flexible editing experience. The strongest builds separate content management from presentation so clients can update pages without introducing unnecessary layout problems.\n\n## Build reusable sections\n\nReusable ACF sections can keep editing simple while still giving a site enough flexibility for different page layouts. Each section should have a clear purpose, predictable fields, and sensible defaults.\n\n## Keep the frontend focused\n\nPerformance improves when the frontend only loads what the page actually needs. Clean templates, optimized images, limited scripts, and thoughtful font loading can make a measurable difference.\n\n## Test the editing workflow\n\nA website should be tested from both sides. Visitors need a fast and accessible experience, while editors need a reliable way to publish updates without touching code."
-  },
-  {
     "title": "Why SEO and Website Development Work Better Together",
     "slug": "seo-and-website-development-together",
     "excerpt": "Technical structure, content clarity, performance, and search visibility are easier to improve when they are considered during development.",
