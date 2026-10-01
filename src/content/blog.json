@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "title": "Why SEO and Website Development Work Better Together",
+    "slug": "seo-and-website-development-together",
+    "excerpt": "Technical structure, content clarity, performance, and search visibility are easier to improve when they are considered during development.",
+    "date": "2026-09-29",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/1790888187342-114aa260-gig-photo.jpg",
+    "imageAlt": "Ahsanul Haque Chowdhury working on SEO and website development",
+    "imageTitle": "SEO and Website Development",
+    "metaTitle": "SEO and Web Development | Ahsanul Haque Chowdhury",
+    "metaDescription": "See why Ahsanul Haque Chowdhury combines SEO thinking with website development to improve structure, performance, and search visibility.",
+    "tags": [
+      "SEO",
+      "Frontend Development",
+      "Technical SEO"
+    ],
+    "content": "SEO is easier to maintain when it is considered during development instead of being added after launch. Page structure, headings, internal links, image handling, and performance all affect how a site communicates with users and search engines.\n\n## Structure supports clarity\n\nA clear heading hierarchy and descriptive navigation help people understand a page quickly. They also make the content easier for search systems to interpret.\n\n## Performance supports usability\n\nFast pages reduce friction. Image sizing, script control, caching, and clean templates can support both Core Web Vitals and a better visitor experience.\n\n## Content should remain editable\n\nA technically strong site is easier to maintain when editors can update important content without breaking the layout. Good development and good SEO often share the same goal, making information easier to access and manage."
+  }
+]
