@@ -1,13 +1,5 @@
 [
   {
-    "title": "CMS Gallery Test",
-    "image": "/uploads/1790878254899-photo.jpg",
-    "alt": "Image of Ahsanul Haque Chowdhury",
-    "description": "Image of Ahsanul Haque Chowdhury.",
-    "caption": "Image of Ahsanul Haque Chowdhury",
-    "keywords": []
-  },
-  {
     "title": "Ahsanul Haque Chowdhury Professional Portrait 01",
     "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
     "alt": "Professional portrait of Ahsanul Haque Chowdhury, frontend developer and SEO specialist in Dhaka",
