@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "title": "blog 1 test",
+    "slug": "blog-1-test",
+    "excerpt": "blog 1 test",
+    "date": "2026-10-01",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/gig photo.jpg",
+    "imageAlt": "blog 1 test",
+    "imageTitle": "blog 1 test",
+    "metaTitle": "blog 1 test",
+    "metaDescription": "blog 1 test",
+    "tags": [
+      "blog 1 test"
+    ],
+    "content": "blog 1 test"
+  }
+]
