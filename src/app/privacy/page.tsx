@@ -57,7 +57,7 @@ export default function PrivacyPage() {
         path="/privacy"
       />
       <article className="page-container py-12">
-        <Reveal effect="fade-up" duration={900}>
+     <Reveal effect="fade-up" duration={1000}>
           <div className="mx-auto max-w-5xl">
             <p className="mb-7 text-sm font-semibold uppercase tracking-[0.14em] text-blue-700 dark:text-blue-300">Last updated: October 1, 2026</p>
             <div className="grid gap-5 md:grid-cols-2">
