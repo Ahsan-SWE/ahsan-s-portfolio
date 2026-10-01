@@ -1,193 +1,14 @@
 import { GalleryGrid } from "@/components/pages/gallery-grid";
 import { PageHero, ProjectCta, Section } from "@/components/pages/page-shell";
 import { StructuredData } from "@/components/seo/json-ld";
+import galleryContent from "@/content/gallery.json";
 import { pageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
-const galleryItems = [
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 01",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Professional portrait of Ahsanul Haque Chowdhury, frontend developer and SEO specialist in Dhaka",
-    "description": "Professional image of Ahsanul Haque Chowdhury for his developer, SEO, ORM, and WordPress portfolio.",
-    "caption": "Ahsanul Haque Chowdhury, Frontend Developer and SEO Specialist",
-    "keywords": [
-      "Ahsanul Haque Chowdhury",
-      "Frontend Developer",
-      "SEO Specialist"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 02",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, software developer specializing in WordPress, Next.js, SEO, and ORM",
-    "description": "Portfolio image of Ahsanul Haque Chowdhury highlighting his software development and digital optimization background.",
-    "caption": "Software Development, SEO, and ORM Professional",
-    "keywords": [
-      "Ahsanul Haque Chowdhury",
-      "Software Developer",
-      "ORM"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 03",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, WordPress and ACF developer based in Dhaka, Bangladesh",
-    "description": "Professional gallery image for Ahsanul Haque Chowdhury, focused on custom WordPress and ACF development.",
-    "caption": "Custom WordPress and ACF Developer",
-    "keywords": [
-      "WordPress Developer",
-      "ACF Developer",
-      "Dhaka"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 04",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Portrait of Ahsanul Haque Chowdhury, React and Next.js frontend developer",
-    "description": "SEO-ready portrait of Ahsanul Haque Chowdhury for frontend development, React, and Next.js related content.",
-    "caption": "React and Next.js Frontend Developer",
-    "keywords": [
-      "React Developer",
-      "Next.js Developer",
-      "Frontend"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 05",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, online reputation management and SEO professional",
-    "description": "Professional image representing Ahsanul Haque Chowdhury's experience in SEO and online reputation management.",
-    "caption": "SEO and Online Reputation Management Professional",
-    "keywords": [
-      "SEO",
-      "Online Reputation Management",
-      "Ahsanul Haque"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 06",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, website performance and technical SEO specialist",
-    "description": "Portfolio gallery image for website performance, technical SEO, and frontend optimization services.",
-    "caption": "Website Performance and Technical SEO",
-    "keywords": [
-      "Technical SEO",
-      "Website Performance",
-      "Core Web Vitals"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 07",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, custom website developer in Bangladesh",
-    "description": "Professional image of Ahsanul Haque Chowdhury for custom website development and portfolio presentation.",
-    "caption": "Custom Website Developer in Bangladesh",
-    "keywords": [
-      "Website Developer",
-      "Bangladesh",
-      "Portfolio"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 08",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, frontend developer focused on responsive and accessible websites",
-    "description": "Gallery image representing responsive frontend development, accessibility, and clean user experiences.",
-    "caption": "Responsive and Accessible Frontend Development",
-    "keywords": [
-      "Responsive Web Design",
-      "Accessibility",
-      "Frontend Development"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 09",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, CMS and WordPress website management professional",
-    "description": "Professional image for CMS management, WordPress maintenance, and structured content workflows.",
-    "caption": "CMS and WordPress Website Management",
-    "keywords": [
-      "CMS",
-      "WordPress",
-      "Website Management"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 10",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, digital professional combining development, SEO, and content strategy",
-    "description": "Portfolio image showing the combined development, SEO, ORM, and content strategy expertise of Ahsanul Haque Chowdhury.",
-    "caption": "Development, SEO, and Content Strategy",
-    "keywords": [
-      "Digital Strategy",
-      "SEO",
-      "Content Strategy"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 11",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, software engineering graduate and web developer",
-    "description": "Professional gallery image of Ahsanul Haque Chowdhury, a software engineering graduate working in web development.",
-    "caption": "Software Engineering Graduate and Web Developer",
-    "keywords": [
-      "Software Engineering",
-      "Web Developer",
-      "Daffodil International University"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 12",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, web developer and SEO professional at Aan-Nahl Software",
-    "description": "Professional portrait for Ahsanul Haque Chowdhury's work in website development, SEO, and digital operations.",
-    "caption": "Web Developer and SEO Professional",
-    "keywords": [
-      "Aan-Nahl Software",
-      "SEO Professional",
-      "Web Developer"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 13",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, developer working with HTML, CSS, JavaScript, React, and Next.js",
-    "description": "Gallery image for Ahsanul Haque Chowdhury's frontend technology skills and modern web development work.",
-    "caption": "Modern Frontend Development",
-    "keywords": [
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "React",
-      "Next.js"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 14",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Ahsanul Haque Chowdhury, developer focused on clean websites and search visibility",
-    "description": "SEO-optimized professional image supporting Ahsanul Haque Chowdhury's personal brand and portfolio visibility.",
-    "caption": "Clean Websites and Search Visibility",
-    "keywords": [
-      "Personal Brand",
-      "Search Visibility",
-      "Web Development"
-    ]
-  },
-  {
-    "title": "Ahsanul Haque Chowdhury Professional Portrait 15",
-    "image": "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
-    "alt": "Professional profile image of Ahsanul Haque Chowdhury from Dhaka, Bangladesh",
-    "description": "Professional profile image prepared for the image gallery and search-focused personal branding of Ahsanul Haque Chowdhury.",
-    "caption": "Ahsanul Haque Chowdhury, Dhaka, Bangladesh",
-    "keywords": [
-      "Ahsanul Haque Chowdhury",
-      "Dhaka",
-      "Bangladesh"
-    ]
-  }
-];
+const galleryItems = galleryContent.map((item) => ({
+  ...item,
+  keywords: Array.isArray(item.keywords) ? item.keywords : [],
+}));
 
 export const metadata = pageMetadata(
   "Image Gallery of Ahsanul Haque Chowdhury",
@@ -205,26 +26,33 @@ export default function GalleryPage() {
         path="/gallery"
         type="CollectionPage"
       />
-      <StructuredData data={{
-        "@context": "https://schema.org",
-        "@type": "ImageGallery",
-        name: "Image Gallery of Ahsanul Haque Chowdhury",
-        url: `${siteUrl}/gallery`,
-        associatedMedia: galleryItems.map((item) => ({
-          "@type": "ImageObject",
-          contentUrl: item.image.startsWith("http") ? item.image : `${siteUrl}${item.image}`,
-          name: item.title,
-          caption: item.caption,
-          description: item.description,
-          keywords: item.keywords.join(", "),
-        })),
-      }} />
+
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ImageGallery",
+          name: "Image Gallery of Ahsanul Haque Chowdhury",
+          url: `${siteUrl}/gallery`,
+          associatedMedia: galleryItems.map((item) => ({
+            "@type": "ImageObject",
+            contentUrl: item.image.startsWith("http")
+              ? item.image
+              : `${siteUrl}${item.image}`,
+            name: item.title,
+            caption: item.caption,
+            description: item.description,
+            keywords: item.keywords.join(", "),
+          })),
+        }}
+      />
+
       <Section
         title="Image Gallery of Ahsanul Haque Chowdhury"
         intro="This gallery brings together selected images that reflect his experience in software development, WordPress, SEO, digital projects, and professional growth. Each photo offers a closer look at the people, places, and moments connected to his work and development."
       >
         <GalleryGrid items={galleryItems} />
       </Section>
+
       <ProjectCta
         title="Need a stronger professional web presence?"
         text="My portfolio combines development, technical SEO, image optimization, structured data, and maintainable content workflows so a website can look polished while remaining practical to update."
