@@ -1,0 +1,22 @@
+# Ahsanul Haque Chowdhury
+
+> Software developer in Dhaka, Bangladesh, working with custom WordPress and ACF, React, Next.js, SEO, and online reputation management.
+
+## Website
+- [Home](https://ahsanulhaquechowdhury.vercel.app/): Overview, services, experience, projects, and contact.
+- [About](https://ahsanulhaquechowdhury.vercel.app/about): Professional background and approach.
+- [Services](https://ahsanulhaquechowdhury.vercel.app/services): Development, SEO, ORM, performance, content, and marketing support.
+- [Expertise](https://ahsanulhaquechowdhury.vercel.app/expertise): Work experience, education, and continuing learning.
+- [Portfolio](https://ahsanulhaquechowdhury.vercel.app/portfolio): Six website project case studies.
+- [Contact](https://ahsanulhaquechowdhury.vercel.app/contact): Project inquiries.
+- [Privacy](https://ahsanulhaquechowdhury.vercel.app/privacy): Information handling.
+
+## Professional details
+- Name: Ahsanul Haque Chowdhury
+- Current role: Senior Executive Software Development, Aan-Nahl Software, February 2025 to present.
+- Education: B.Sc. in Software Engineering, Daffodil International University, 2020-2023.
+- Email: ahsan.chowdhury202@gmail.com
+- LinkedIn: https://www.linkedin.com/in/ahsan-swe
+- GitHub: https://github.com/Ahsan-SWE
+
+Project case studies describe website scope and development considerations. They do not establish measured search ranking or traffic improvements.

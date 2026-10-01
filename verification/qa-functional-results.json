@@ -1,0 +1,183 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app",
+      "words": 813
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/about",
+      "words": 667
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services",
+      "words": 982
+    },
+    {
+      "path": "/expertise",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/expertise",
+      "words": 1424
+    },
+    {
+      "path": "/portfolio",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio",
+      "words": 435
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/contact",
+      "words": 388
+    },
+    {
+      "path": "/privacy",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/privacy",
+      "words": 360
+    },
+    {
+      "path": "/services/frontend-development",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/frontend-development",
+      "words": 422
+    },
+    {
+      "path": "/services/seo-and-orm",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/seo-and-orm",
+      "words": 418
+    },
+    {
+      "path": "/services/wordpress-development",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/wordpress-development",
+      "words": 422
+    },
+    {
+      "path": "/services/performance-optimization",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/performance-optimization",
+      "words": 400
+    },
+    {
+      "path": "/services/ai-content-strategy",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/ai-content-strategy",
+      "words": 408
+    },
+    {
+      "path": "/services/digital-marketing",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/services/digital-marketing",
+      "words": 401
+    },
+    {
+      "path": "/portfolio/aan-nahl",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/aan-nahl",
+      "words": 451
+    },
+    {
+      "path": "/portfolio/peter-rentrop",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/peter-rentrop",
+      "words": 461
+    },
+    {
+      "path": "/portfolio/axia-consult",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/axia-consult",
+      "words": 470
+    },
+    {
+      "path": "/portfolio/richard-pestell",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/richard-pestell",
+      "words": 479
+    },
+    {
+      "path": "/portfolio/andrea-jaeger",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/andrea-jaeger",
+      "words": 481
+    },
+    {
+      "path": "/portfolio/adriana-kugler",
+      "status": 200,
+      "h1": 1,
+      "canonical": "https://ahsanulhaquechowdhury.vercel.app/portfolio/adriana-kugler",
+      "words": 474
+    }
+  ],
+  "checks": [
+    "All 19 routes return 200 with unique metadata and one H1",
+    "Structured data parses and canonicals match",
+    "No broken rendered images or document overflow",
+    "Home particles move, pause on inner pages, resume without duplicate canvases",
+    "Theme toggle and mobile menu work, Escape closes menu",
+    "Missing email configuration shows error and preserves the message",
+    "320px, 390px, and 768px layouts checked",
+    "Main content visible without JavaScript",
+    "Reduced motion disables particle animation",
+    "Unknown pages return 404; old routes redirect permanently",
+    "No browser JavaScript errors"
+  ],
+  "accessibility": [
+    {
+      "path": "/services",
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "path": "/contact",
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "path": "/expertise",
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "path": "/",
+      "theme": "light",
+      "violations": []
+    },
+    {
+      "path": "/",
+      "theme": "dark",
+      "violations": []
+    }
+  ],
+  "browserContact": [
+    "Successful UI submit reaches local SMTP sink",
+    "Reply-To contains visitor email",
+    "Success resets form",
+    "Provider failure shows error and preserves message"
+  ]
+}

@@ -1,0 +1,35 @@
+AHSANUL HAQUE CHOWDHURY PORTFOLIO - FINAL REFINEMENT VERIFICATION
+Verification date: 2026-10-01
+
+LATEST CHANGES VERIFIED AT SOURCE LEVEL
+- Gallery responsive grid is 1 column on small, 2 on medium, 4 on large.
+- Gallery images use uncropped object-contain presentation.
+- Gallery visible keyword tags were removed from cards while SEO metadata remains in data/schema.
+- Gallery lightbox includes open, close, previous, next, Escape, and keyboard arrow behavior.
+- Blog responsive grid is 1 column on small, 2 on medium, 3 on large.
+- Blog image area is approximately 30% taller than the previous 14rem card image area.
+- Blog list and article images use uncropped object-contain presentation.
+- Services project flow now contains six detailed stages with icons and animation styling.
+- Shared inner-page hero icons and additional page-specific icon blocks were added.
+- Stronger focus-text accent styling was added to inner-page copy.
+- Inner-page content was expanded while the homepage source was left unchanged in this pass.
+- Service detail pages now show all configured sections and deliverables instead of truncated subsets.
+- Portfolio case studies now show all configured sections and considerations instead of truncated subsets.
+
+SOURCE CHECKS PASSED
+- Updated TS/TSX syntax transpilation check.
+- Blog, Gallery, and Portfolio JSON parsing.
+- CSS brace-balance check.
+- No Bengali text detected inside src.
+
+ENVIRONMENT LIMITATION
+A fresh dependency installation timed out in this workspace, so the latest changes could not be followed by a complete ESLint, TypeScript typecheck, Next.js production build, or agent-browser visual verification here.
+
+BEFORE PRODUCTION DEPLOYMENT
+1. Run: npm ci
+2. Run: npm run check
+3. Run: npm run dev
+4. Visually verify Gallery, Blog, Services, About, Expertise, Portfolio, Contact, Privacy, and representative detail pages at mobile, tablet, and desktop widths.
+5. Verify the gallery lightbox previous/next controls and click-to-close behavior.
+6. Deploy to Vercel only after the local checks pass.
+7. Confirm robots.txt and sitemap.xml on the production domain before Google Search Console submission.

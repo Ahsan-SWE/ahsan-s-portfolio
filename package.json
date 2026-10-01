@@ -1,0 +1,41 @@
+{
+  "name": "ahsan-portfolio-nextjs",
+  "version": "1.0.0",
+  "description": "SEO-focused professional portfolio for Ahsanul Haque Chowdhury.",
+  "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "dev:network": "next dev --hostname 0.0.0.0",
+    "dev:webpack": "next dev --webpack --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "start:network": "next start --hostname 0.0.0.0",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm run build",
+    "test:contact": "node scripts/test-contact.mjs"
+  },
+  "dependencies": {
+    "next": "16.2.10",
+    "next-themes": "^0.4.6",
+    "nodemailer": "^10.0.13",
+    "particles.js": "^2.0.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-icons": "^5.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.10",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
