@@ -95,7 +95,7 @@ export function PageHero({
 export function Section({ title, intro, children, id, className = "" }: { title: string; intro?: string; children?: ReactNode; id?: string; className?: string }) {
   return (
     <section id={id} className={`page-container py-10 sm:py-14 ${className}`}>
-      <Reveal effect="fade-up" duration={900}>
+     <Reveal effect="fade-up" duration={1000}>
         <h2 className="section-title"><span className="highlight-text">{title}</span></h2>
         {intro ? <p className="mt-4 max-w-3xl text-base leading-relaxed text-slate-700 dark:text-slate-200 sm:text-lg">{intro}</p> : null}
       </Reveal>
@@ -113,7 +113,7 @@ export function ProjectCta({
 }) {
   return (
     <section className="page-container pb-14 pt-3">
-      <Reveal effect="zoom-in" duration={900}>
+      <Reveal effect="zoom-in" duration={1000}>
         <div className="group relative overflow-hidden rounded-3xl border border-blue-400/20 bg-gradient-to-br from-slate-900 via-[#12213b] to-slate-900 px-7 py-9 text-white shadow-xl shadow-blue-950/20 sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-8">
           <div className="absolute -right-12 -top-16 h-44 w-44 rounded-full bg-blue-500/15 blur-2xl transition duration-700 group-hover:scale-125" aria-hidden="true" />
           <div className="relative max-w-2xl">
