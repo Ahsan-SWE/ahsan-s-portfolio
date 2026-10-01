@@ -1,5 +1,19 @@
 [
   {
+    "title": "My New Website Project",
+    "slug": "my-new-website-project",
+    "excerpt": "",
+    "date": "2026-10-01",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/shared image.jfif",
+    "imageAlt": "",
+    "imageTitle": "",
+    "metaTitle": "",
+    "metaDescription": "",
+    "tags": [],
+    "content": ""
+  },
+  {
     "title": "Why SEO and Website Development Work Better",
     "slug": "why-seo-and-website-development-work-better",
     "excerpt": "Technical structure, content clarity, performance, and search visibility are easier to improve when they are considered during development.",
