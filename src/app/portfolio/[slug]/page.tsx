@@ -30,7 +30,7 @@ type CmsProject = {
 
 const managedProjects = cmsProjects as CmsProject[];
 
-export const dynamicParams = false;
+export const dynamicParams = true;
 export function generateStaticParams() {
   return managedProjects.map(({ slug }) => ({ slug }));
 }

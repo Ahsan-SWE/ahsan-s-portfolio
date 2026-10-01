@@ -17,7 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}${path}`,
       lastModified,
       ...(path === "" ? { images: [`${siteUrl}${siteConfig.image}`, ...projects.map((project) => `${siteUrl}${project.image}`)] } : {}),
-      ...(path === "/gallery" ? { images: gallery.map((item) => item.image) } : {}),
+      ...(path === "/gallery" ? { images: gallery.map((item) => item.image.startsWith("http") ? item.image : `${siteUrl}${item.image}`) } : {}),
     })),
     ...serviceDetails.map((service) => ({ url: `${siteUrl}/services/${service.slug}`, lastModified })),
     ...projects.map((project) => ({ url: `${siteUrl}/portfolio/${project.slug}`, lastModified, images: [`${siteUrl}${project.image}`] })),

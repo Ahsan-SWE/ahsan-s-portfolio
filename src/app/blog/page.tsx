@@ -3,49 +3,7 @@ import Link from "next/link";
 import { FaBookOpen, FaCalendarAlt, FaTags } from "react-icons/fa";
 import { PageHero, ProjectCta, Section } from "@/components/pages/page-shell";
 import { pageMetadata } from "@/lib/seo";
-import cmsPosts from "@/content/blog.json";
-
-const manualPosts = [
-  {
-    "title": "Building Faster WordPress Websites Without Losing Flexibility",
-    "slug": "building-faster-wordpress-websites",
-    "excerpt": "A practical look at balancing custom WordPress editing flexibility with clean frontend performance and maintainable structure.",
-    "date": "2026-09-30",
-    "author": "Ahsanul Haque Chowdhury",
-    "image": "/images/profile-image.webp",
-    "imageAlt": "Ahsanul Haque Chowdhury discussing WordPress development and performance",
-    "imageTitle": "WordPress Performance by Ahsanul Haque Chowdhury",
-    "metaTitle": "Faster WordPress Websites | Ahsanul Haque Chowdhury",
-    "metaDescription": "Learn how Ahsanul Haque Chowdhury approaches faster WordPress websites with flexible editing, clean structure, and practical performance improvements.",
-    "tags": [
-      "WordPress",
-      "Performance",
-      "Web Development"
-    ]
-  },
-  {
-    "title": "Why SEO and Website Development Work Better Together",
-    "slug": "seo-and-website-development-together",
-    "excerpt": "Technical structure, content clarity, performance, and search visibility are easier to improve when they are considered during development.",
-    "date": "2026-09-29",
-    "author": "Ahsanul Haque Chowdhury",
-    "image": "/images/profile-image.webp",
-    "imageAlt": "Ahsanul Haque Chowdhury working on SEO and website development",
-    "imageTitle": "SEO and Website Development",
-    "metaTitle": "SEO and Web Development | Ahsanul Haque Chowdhury",
-    "metaDescription": "See why Ahsanul Haque Chowdhury combines SEO thinking with website development to improve structure, performance, and search visibility.",
-    "tags": [
-      "SEO",
-      "Frontend Development",
-      "Technical SEO"
-    ]
-  }
-] as const;
-const manualPostSlugs = new Set<string>(manualPosts.map((post) => post.slug));
-const posts = [
-  ...manualPosts,
-  ...cmsPosts.filter((post) => !manualPostSlugs.has(post.slug)),
-];
+import posts from "@/content/blog.json";
 
 export const metadata = pageMetadata(
   "Blog | Ahsanul Haque Chowdhury",
@@ -87,7 +45,7 @@ export default function BlogPage() {
               <div className="flex flex-1 flex-col border-t border-slate-200 p-6 dark:border-slate-800 sm:p-7">
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-300">
                   <span className="inline-flex items-center gap-2"><FaCalendarAlt aria-hidden="true" /><time dateTime={post.date}>{new Date(`${post.date}T00:00:00`).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</time></span>
-                  <span className="inline-flex items-center gap-2"><FaTags aria-hidden="true" />{post.tags[0]}</span>
+                  {post.tags[0] ? <span className="inline-flex items-center gap-2"><FaTags aria-hidden="true" />{post.tags[0]}</span> : null}
                 </div>
                 <h2 className="mt-4 text-2xl font-bold leading-snug"><Link href={`/blog/${post.slug}`} className="transition hover:text-blue-600 dark:hover:text-blue-300">{post.title}</Link></h2>
                 <p className="card-copy flex-1">{post.excerpt}</p>

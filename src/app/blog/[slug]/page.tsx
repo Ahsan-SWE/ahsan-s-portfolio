@@ -9,29 +9,24 @@ import { pageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 import posts from "@/content/blog.json";
 
-const manualStaticSlugs = new Set([
-  "building-faster-wordpress-websites",
-  "seo-and-website-development-together",
-]);
-const dynamicPosts = posts.filter((post) => !manualStaticSlugs.has(post.slug));
+export const dynamicParams = true;
 
-export const dynamicParams = false;
 export function generateStaticParams() {
-  return dynamicPosts.map((post) => ({ slug: post.slug }));
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const post = dynamicPosts.find((item) => item.slug === slug);
+  const post = posts.find((item) => item.slug === slug);
   if (!post) notFound();
   return pageMetadata(post.metaTitle, post.metaDescription, `/blog/${post.slug}`);
 }
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const post = dynamicPosts.find((item) => item.slug === slug);
+  const post = posts.find((item) => item.slug === slug);
   if (!post) notFound();
 
   return (
@@ -59,7 +54,7 @@ export default async function BlogPostPage({ params }: Props) {
             <span className="inline-flex items-center gap-2"><FaCalendarAlt className="text-blue-600 dark:text-blue-300" aria-hidden="true" /><time dateTime={post.date}>{new Date(`${post.date}T00:00:00`).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</time></span>
           </div>
           <div className="mt-8"><MarkdownContent content={post.content} /></div>
-          <div className="mt-10 flex flex-wrap gap-2">{post.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
+          {post.tags.length ? <div className="mt-10 flex flex-wrap gap-2">{post.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div> : null}
           <Link href="/blog" className="text-link mt-8 inline-flex items-center gap-2"><FaArrowLeft aria-hidden="true" />Back to all articles</Link>
         </div>
       </article>

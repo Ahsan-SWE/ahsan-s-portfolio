@@ -159,3 +159,7 @@ The new role is dated February 2025 to present. Based on the confirmed promotion
 - Google App Passwords: https://support.google.com/accounts/answer/185833
 - Next.js sitemap convention: https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
 - Nodemailer Gmail guidance: https://nodemailer.com/usage/using-gmail/
+
+## Secure content CMS
+
+Blog, gallery, and portfolio publishing can be managed from `/admin` without entering a GitHub token in the browser. See `CMS_SETUP.md` for the one-time GitHub and Vercel environment-variable setup.

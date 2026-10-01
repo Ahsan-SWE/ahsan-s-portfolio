@@ -7,17 +7,11 @@ import portfolioSeed from "@/content/portfolio.json";
 
 type Collection = "blog" | "gallery" | "portfolio";
 type JsonItem = Record<string, unknown>;
+type CmsData = Record<Collection, JsonItem[]>;
 
-type Config = {
+type Target = {
   repo: string;
   branch: string;
-  token: string;
-};
-
-const paths: Record<Collection, string> = {
-  blog: "src/content/blog.json",
-  gallery: "src/content/gallery.json",
-  portfolio: "src/content/portfolio.json",
 };
 
 const emptyBlog = {
@@ -26,7 +20,7 @@ const emptyBlog = {
   excerpt: "",
   date: new Date().toISOString().slice(0, 10),
   author: "Ahsanul Haque Chowdhury",
-  image: "/images/profile-image.webp",
+  image: "",
   imageAlt: "",
   imageTitle: "",
   metaTitle: "",
@@ -37,7 +31,7 @@ const emptyBlog = {
 
 const emptyGallery = {
   title: "",
-  image: "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
+  image: "",
   alt: "",
   description: "",
   caption: "",
@@ -50,7 +44,7 @@ const emptyPortfolio = {
   summary: "",
   category: "",
   url: "",
-  image: "https://ahsanulhaquechowdhury.vercel.app/images/profile-image.svg",
+  image: "",
   alt: "",
   tags: [] as string[],
   challenge: "",
@@ -60,34 +54,35 @@ const emptyPortfolio = {
   metaDescription: "",
 };
 
-function encodeBase64(value: string) {
-  return btoa(unescape(encodeURIComponent(value)));
-}
-
-function decodeBase64(value: string) {
-  return decodeURIComponent(escape(atob(value.replace(/\n/g, ""))));
-}
-
 function slugify(value: string) {
   return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
+async function readJson<T>(response: Response): Promise<T> {
+  const body = (await response.json().catch(() => ({}))) as T & { error?: string };
+  if (!response.ok) throw new Error(body.error || `Request failed with ${response.status}.`);
+  return body;
+}
+
 export function ContentCms() {
   const [collection, setCollection] = useState<Collection>("blog");
-  const [data, setData] = useState<Record<Collection, JsonItem[]>>({
+  const [data, setData] = useState<CmsData>({
     blog: blogSeed as JsonItem[],
     gallery: gallerySeed as JsonItem[],
     portfolio: portfolioSeed as JsonItem[],
   });
-  const [config, setConfig] = useState<Config>({ repo: "Ahsan-SWE/ahsan-s-portfolio", branch: "main", token: "" });
   const [form, setForm] = useState<JsonItem>({ ...emptyBlog });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [status, setStatus] = useState("Connect GitHub to publish changes.");
+  const [pendingImage, setPendingImage] = useState<File | null>(null);
+  const [target, setTarget] = useState<Target | null>(null);
+  const [status, setStatus] = useState("Ready. Add or edit content, then publish it in one step.");
   const [busy, setBusy] = useState(false);
 
   const items = data[collection];
-  const configReady = config.repo.includes("/") && config.branch && config.token;
-  const title = useMemo(() => collection === "blog" ? "Blog posts" : collection === "gallery" ? "Gallery images" : "Portfolio case studies", [collection]);
+  const title = useMemo(
+    () => collection === "blog" ? "Blog posts" : collection === "gallery" ? "Gallery images" : "Portfolio case studies",
+    [collection],
+  );
 
   function blankFor(type: Collection): JsonItem {
     if (type === "blog") return { ...emptyBlog };
@@ -98,8 +93,9 @@ export function ContentCms() {
   function switchCollection(type: Collection) {
     setCollection(type);
     setEditingIndex(null);
+    setPendingImage(null);
     setForm(blankFor(type));
-    setStatus("Ready to edit local content. Connect GitHub to publish.");
+    setStatus(`Ready to manage ${type} content.`);
   }
 
   function update(key: string, value: unknown) {
@@ -107,170 +103,239 @@ export function ContentCms() {
   }
 
   function updateTitle(value: string) {
-    setForm((current) => ({ ...current, title: value, ...(collection !== "gallery" && !current.slug ? { slug: slugify(value) } : {}) }));
+    setForm((current) => ({
+      ...current,
+      title: value,
+      ...(collection !== "gallery" && !current.slug ? { slug: slugify(value) } : {}),
+    }));
   }
 
   function editItem(index: number) {
     setEditingIndex(index);
+    setPendingImage(null);
     setForm({ ...items[index] });
+    setStatus("Editing item. Save and publish when the changes are ready.");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function resetForm() {
     setEditingIndex(null);
+    setPendingImage(null);
     setForm(blankFor(collection));
   }
 
-  function applyForm() {
-    const required = collection === "gallery" ? ["title", "image", "alt", "description"] : ["title", "slug", "image"];
-    if (required.some((key) => !String(form[key] ?? "").trim())) {
-      setStatus(`Please complete: ${required.join(", ")}.`);
-      return;
-    }
-    setData((current) => {
-      const next = [...current[collection]];
-      if (editingIndex === null) next.unshift({ ...form });
-      else next[editingIndex] = { ...form };
-      return { ...current, [collection]: next };
-    });
-    setStatus(editingIndex === null ? "Item added locally. Click Publish to GitHub to make it live." : "Item updated locally. Click Publish to GitHub to make it live.");
-    resetForm();
+  function validateDraft(draft: JsonItem) {
+    const imageReady = Boolean(String(draft.image ?? "").trim() || pendingImage);
+    const required = collection === "gallery" ? ["title", "alt", "description"] : ["title", "slug"];
+    const missing = required.filter((key) => !String(draft[key] ?? "").trim());
+    if (!imageReady) missing.push("image");
+    if (missing.length) throw new Error(`Please complete: ${missing.join(", ")}.`);
   }
 
-  function deleteItem(index: number) {
-    if (!window.confirm("Delete this item from the local CMS list?")) return;
-    setData((current) => ({ ...current, [collection]: current[collection].filter((_, itemIndex) => itemIndex !== index) }));
-    if (editingIndex === index) resetForm();
-    setStatus("Item removed locally. Click Publish to GitHub to apply the deletion.");
-  }
-
-  async function githubRequest(path: string, options?: RequestInit) {
-    const response = await fetch(`https://api.github.com/repos/${config.repo}/contents/${path}`, {
-      ...options,
-      headers: {
-        Accept: "application/vnd.github+json",
-        Authorization: `Bearer ${config.token}`,
-        "X-GitHub-Api-Version": "2022-11-28",
-        ...(options?.headers || {}),
-      },
-    });
-    if (!response.ok) {
-      const body = await response.json().catch(() => ({}));
-      throw new Error(body.message || `GitHub request failed with ${response.status}`);
-    }
-    return response.json();
-  }
-
-  async function loadFromGitHub() {
-    if (!configReady) return setStatus("Enter repository, branch, and a fine-grained GitHub token first.");
+  async function loadLatestContent() {
     setBusy(true);
+    setStatus("Loading the latest content from GitHub...");
     try {
-      const loaded: Record<Collection, JsonItem[]> = { blog: [], gallery: [], portfolio: [] };
-      for (const type of ["blog", "gallery", "portfolio"] as Collection[]) {
-        const file = await githubRequest(`${paths[type]}?ref=${encodeURIComponent(config.branch)}`);
-        loaded[type] = JSON.parse(decodeBase64(file.content));
-      }
-      setData(loaded);
-      setStatus("Latest content loaded from GitHub.");
+      const response = await fetch("/api/cms/content", { cache: "no-store" });
+      const body = await readJson<{ data: CmsData; target: Target }>(response);
+      setData(body.data);
+      setTarget(body.target);
       resetForm();
+      setStatus("Latest content loaded. You can edit and publish without using the terminal.");
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Could not load content from GitHub.");
+      setStatus(error instanceof Error ? error.message : "Could not load the latest content.");
     } finally {
       setBusy(false);
     }
   }
 
-  async function publishCollection() {
-    if (!configReady) return setStatus("Enter repository, branch, and a fine-grained GitHub token first.");
-    setBusy(true);
+  async function uploadPendingImage(file: File) {
+    const payload = new FormData();
+    payload.append("file", file);
+    const response = await fetch("/api/cms/image", { method: "POST", body: payload });
+    return readJson<{ image: string }>(response);
+  }
+
+  async function cleanupUploadedImage(image: string) {
+    if (!image.startsWith("/uploads/")) return;
+    await fetch("/api/cms/image", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image }),
+    }).catch(() => undefined);
+  }
+
+  async function publishData(nextItems: JsonItem[]) {
+    const response = await fetch("/api/cms/publish", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ collection, data: nextItems }),
+    });
+    return readJson<{ removedImages: number; cleanupWarnings: string[] }>(response);
+  }
+
+  async function saveAndPublish() {
+    if (busy) return;
+    const draft: JsonItem = { ...form };
+
     try {
-      const path = paths[collection];
-      const current = await githubRequest(`${path}?ref=${encodeURIComponent(config.branch)}`);
-      await githubRequest(path, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: `Update ${collection} content from portfolio CMS`,
-          content: encodeBase64(`${JSON.stringify(data[collection], null, 2)}\n`),
-          sha: current.sha,
-          branch: config.branch,
-        }),
-      });
-      setStatus("Published to GitHub. Vercel will rebuild the site from the new commit.");
+      validateDraft(draft);
     } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Please complete the required fields.");
+      return;
+    }
+
+    setBusy(true);
+    setStatus(pendingImage ? "Uploading the image and publishing the item..." : "Publishing the item...");
+    let newlyUploadedImage = "";
+
+    try {
+      if (pendingImage) {
+        const uploaded = await uploadPendingImage(pendingImage);
+        newlyUploadedImage = uploaded.image;
+        draft.image = uploaded.image;
+      }
+
+      const nextItems = [...items];
+      if (editingIndex === null) nextItems.unshift(draft);
+      else nextItems[editingIndex] = draft;
+
+      const result = await publishData(nextItems);
+      setData((current) => ({ ...current, [collection]: nextItems }));
+      resetForm();
+      setStatus(
+        result.cleanupWarnings.length
+          ? `Published successfully. ${result.cleanupWarnings.length} unused image cleanup warning(s) remain.`
+          : "Published successfully. Vercel will deploy the new content automatically.",
+      );
+    } catch (error) {
+      if (newlyUploadedImage) await cleanupUploadedImage(newlyUploadedImage);
       setStatus(error instanceof Error ? error.message : "Publishing failed.");
     } finally {
       setBusy(false);
     }
   }
 
-  async function uploadImage(event: ChangeEvent<HTMLInputElement>) {
-    const file = event.target.files?.[0];
-    if (!file) return;
-    if (!configReady) {
-      setStatus("Connect GitHub before uploading an image.");
-      event.target.value = "";
-      return;
-    }
+  async function deleteItem(index: number) {
+    if (busy || !window.confirm("Delete this item and publish the change now?")) return;
+    const nextItems = items.filter((_, itemIndex) => itemIndex !== index);
     setBusy(true);
+    setStatus("Deleting and publishing the change...");
+
     try {
-      const safeName = `${Date.now()}-${file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-")}`;
-      const path = `public/uploads/${safeName}`;
-      const buffer = await file.arrayBuffer();
-      const bytes = new Uint8Array(buffer);
-      let binary = "";
-      for (let index = 0; index < bytes.length; index += 1) binary += String.fromCharCode(bytes[index]);
-      await githubRequest(path, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: `Upload ${safeName} from portfolio CMS`, content: btoa(binary), branch: config.branch }),
-      });
-      update("image", `/uploads/${safeName}`);
-      setStatus("Image uploaded. Complete the image title, alt text, caption, and description, then save the item.");
+      const result = await publishData(nextItems);
+      setData((current) => ({ ...current, [collection]: nextItems }));
+      if (editingIndex === index) resetForm();
+      setStatus(
+        result.cleanupWarnings.length
+          ? `Item deleted. ${result.cleanupWarnings.length} image cleanup warning(s) remain.`
+          : "Item deleted and published. Unused uploaded images were cleaned up automatically.",
+      );
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Image upload failed.");
+      setStatus(error instanceof Error ? error.message : "Could not delete the item.");
     } finally {
       setBusy(false);
-      event.target.value = "";
     }
   }
+
+  async function logout() {
+    await fetch("/api/cms/logout", { method: "POST" }).catch(() => undefined);
+    window.location.reload();
+  }
+
+  function chooseImage(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setPendingImage(file);
+    if (file) setStatus(`${file.name} selected. It will upload when you publish.`);
+  }
+
+  const actionLabel = editingIndex === null
+    ? `Publish new ${collection === "gallery" ? "image" : collection === "blog" ? "blog post" : "case study"}`
+    : "Save and publish changes";
 
   return (
     <div className="space-y-8">
       <section className="surface-panel">
-        <p className="eyebrow">GitHub connection</p>
-        <h2 className="mt-3 text-2xl font-bold">Publish content without editing code</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700 dark:text-slate-200">Use a fine-grained GitHub personal access token with Contents read/write permission for this repository only. The token is kept in this browser state and is never written into the project.</p>
-        <div className="mt-6 grid gap-4 md:grid-cols-[1.3fr_.7fr_1fr]">
-          <Field label="Repository" value={config.repo} onChange={(value) => setConfig({ ...config, repo: value })} placeholder="owner/repository" />
-          <Field label="Branch" value={config.branch} onChange={(value) => setConfig({ ...config, branch: value })} placeholder="main" />
-          <Field label="GitHub token" type="password" value={config.token} onChange={(value) => setConfig({ ...config, token: value })} placeholder="github_pat_..." />
+        <p className="eyebrow">Secure publishing</p>
+        <h2 className="mt-3 text-2xl font-bold">Publish without GitHub tokens or terminal commands</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+          GitHub credentials are stored only in server environment variables. Add, edit, or delete content here and the CMS will commit the change so Vercel can deploy it automatically.
+        </p>
+        {target ? (
+          <p className="mt-4 text-sm font-semibold text-blue-700 dark:text-blue-300">
+            Target: {target.repo} / {target.branch}
+          </p>
+        ) : null}
+        <div className="mt-5 flex flex-wrap gap-3">
+          <button className="button-secondary" type="button" onClick={loadLatestContent} disabled={busy}>Refresh content</button>
+          <button className="button-secondary" type="button" onClick={logout} disabled={busy}>Log out</button>
         </div>
-        <div className="mt-5 flex flex-wrap gap-3"><button className="button-secondary" type="button" onClick={loadFromGitHub} disabled={busy}>Load latest content</button><button className="button-primary" type="button" onClick={publishCollection} disabled={busy}>Publish {title}</button></div>
-        <p className="mt-4 rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700 dark:bg-slate-950 dark:text-slate-200">{busy ? "Working..." : status}</p>
+        <p className="mt-4 rounded-xl bg-slate-100 px-4 py-3 text-sm font-medium text-slate-700 dark:bg-slate-950 dark:text-slate-200">
+          {busy ? "Working..." : status}
+        </p>
       </section>
 
-      <div className="flex flex-wrap gap-2">{(["blog", "gallery", "portfolio"] as Collection[]).map((type) => <button key={type} type="button" onClick={() => switchCollection(type)} className={`rounded-xl px-5 py-3 font-semibold capitalize transition ${collection === type ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-100"}`}>{type}</button>)}</div>
+      <div className="flex flex-wrap gap-2">
+        {(["blog", "gallery", "portfolio"] as Collection[]).map((type) => (
+          <button
+            key={type}
+            type="button"
+            onClick={() => switchCollection(type)}
+            className={`rounded-xl px-5 py-3 font-semibold capitalize transition ${collection === type ? "bg-blue-600 text-white" : "bg-slate-200 text-slate-800 dark:bg-slate-800 dark:text-slate-100"}`}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
 
       <section className="grid gap-8 xl:grid-cols-[1fr_.85fr]">
         <div className="surface-panel">
           <p className="eyebrow">{editingIndex === null ? "Create" : "Edit"}</p>
-          <h2 className="mt-3 text-2xl font-bold">{editingIndex === null ? `Add ${collection === "gallery" ? "image" : collection === "blog" ? "blog post" : "case study"}` : "Update item"}</h2>
+          <h2 className="mt-3 text-2xl font-bold">
+            {editingIndex === null
+              ? `Add ${collection === "gallery" ? "image" : collection === "blog" ? "blog post" : "case study"}`
+              : "Update item"}
+          </h2>
           <div className="mt-6 grid gap-5">
             <Field label="Title" value={String(form.title ?? "")} onChange={updateTitle} />
             {collection !== "gallery" ? <Field label="Slug" value={String(form.slug ?? "")} onChange={(value) => update("slug", slugify(value))} /> : null}
             {collection === "blog" ? <BlogFields form={form} update={update} /> : null}
             {collection === "gallery" ? <GalleryFields form={form} update={update} /> : null}
             {collection === "portfolio" ? <PortfolioFields form={form} update={update} /> : null}
-            <div><label className="form-label" htmlFor="cms-image-upload">Upload image to GitHub</label><input id="cms-image-upload" type="file" accept="image/*" onChange={uploadImage} className="form-field file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:font-semibold file:text-white" /></div>
-            <div className="flex flex-wrap gap-3"><button type="button" className="button-primary" onClick={applyForm}>{editingIndex === null ? "Add to collection" : "Save changes"}</button>{editingIndex !== null ? <button type="button" className="button-secondary" onClick={resetForm}>Cancel edit</button> : null}</div>
+            <div>
+              <label className="form-label" htmlFor="cms-image-upload">Choose a new image</label>
+              <input
+                id="cms-image-upload"
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif,image/avif"
+                onChange={chooseImage}
+                className="form-field file:mr-4 file:rounded-lg file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:font-semibold file:text-white"
+              />
+              {pendingImage ? <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">Selected: {pendingImage.name}</p> : null}
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <button type="button" className="button-primary" onClick={saveAndPublish} disabled={busy}>{actionLabel}</button>
+              {editingIndex !== null ? <button type="button" className="button-secondary" onClick={resetForm} disabled={busy}>Cancel edit</button> : null}
+            </div>
           </div>
         </div>
 
         <div className="surface-panel">
-          <p className="eyebrow">Current content</p><h2 className="mt-3 text-2xl font-bold">{title}</h2>
+          <p className="eyebrow">Current content</p>
+          <h2 className="mt-3 text-2xl font-bold">{title}</h2>
           <div className="mt-5 max-h-[820px] space-y-3 overflow-y-auto pr-1">
-            {items.length === 0 ? <p className="text-slate-600 dark:text-slate-300">No items yet.</p> : items.map((item, index) => <div key={`${String(item.slug ?? item.title)}-${index}`} className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700"><h3 className="font-bold">{String(item.title ?? "Untitled")}</h3><p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{String(item.slug ?? item.image ?? "")}</p><div className="mt-3 flex gap-3"><button type="button" className="text-link" onClick={() => editItem(index)}>Edit</button><button type="button" className="font-semibold text-red-600 dark:text-red-400" onClick={() => deleteItem(index)}>Delete</button></div></div>)}
+            {items.length === 0 ? (
+              <p className="text-slate-600 dark:text-slate-300">No items yet.</p>
+            ) : items.map((item, index) => (
+              <div key={`${String(item.slug ?? item.title)}-${index}`} className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                <h3 className="font-bold">{String(item.title ?? "Untitled")}</h3>
+                <p className="mt-1 truncate text-xs text-slate-500 dark:text-slate-400">{String(item.slug ?? item.image ?? "")}</p>
+                <div className="mt-3 flex gap-3">
+                  <button type="button" className="text-link" onClick={() => editItem(index)} disabled={busy}>Edit</button>
+                  <button type="button" className="font-semibold text-red-600 dark:text-red-400" onClick={() => deleteItem(index)} disabled={busy}>Delete</button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
