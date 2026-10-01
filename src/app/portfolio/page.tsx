@@ -5,6 +5,7 @@ import { FaCode, FaLightbulb, FaSearch, FaTasks } from "react-icons/fa";
 import { PageHero, ProjectCta, Section } from "@/components/pages/page-shell";
 import { StructuredData } from "@/components/seo/json-ld";
 import cmsProjects from "@/content/portfolio.json";
+import type { CaseStudy } from "@/data/case-studies";
 import { pageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
@@ -366,7 +367,6 @@ const caseStudies: CaseStudy[] = [
   },
 ];
 
-
 type CmsProject = {
   title: string;
   slug: string;
@@ -384,10 +384,23 @@ type CmsProject = {
 };
 
 const managedProjects = cmsProjects as CmsProject[];
+
 const caseStudyFocus = [
-  { title: "The project context", text: "What the website needed to communicate, who it was built for, and which practical requirement shaped the implementation.", icon: FaLightbulb },
-  { title: "The implementation", text: "How the page structure, frontend, WordPress setup, CMS fields, or reusable components were organized for the project.", icon: FaCode },
-  { title: "Quality and visibility", text: "How responsive behavior, technical SEO, content structure, performance, and usability were considered before handoff.", icon: FaSearch },
+  {
+    title: "The project context",
+    text: "What the website needed to communicate, who it was built for, and which practical requirement shaped the implementation.",
+    icon: FaLightbulb,
+  },
+  {
+    title: "The implementation",
+    text: "How the page structure, frontend, WordPress setup, CMS fields, or reusable components were organized for the project.",
+    icon: FaCode,
+  },
+  {
+    title: "Quality and visibility",
+    text: "How responsive behavior, technical SEO, content structure, performance, and usability were considered before handoff.",
+    icon: FaSearch,
+  },
 ];
 
 export const metadata = pageMetadata(
@@ -398,8 +411,14 @@ export const metadata = pageMetadata(
 
 export default function PortfolioPage() {
   const allItems = [
-    ...caseStudies.map((item) => ({ slug: item.slug, name: item.name })),
-    ...managedProjects.map((item) => ({ slug: item.slug, name: item.title })),
+    ...caseStudies.map((item) => ({
+      slug: item.slug,
+      name: item.name,
+    })),
+    ...managedProjects.map((item) => ({
+      slug: item.slug,
+      name: item.title,
+    })),
   ];
 
   return (
@@ -411,48 +430,177 @@ export default function PortfolioPage() {
         path="/portfolio"
         type="CollectionPage"
       />
-      <StructuredData data={{ "@context": "https://schema.org", "@type": "ItemList", name: "Website portfolio and case studies", itemListElement: allItems.map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, url: `${siteUrl}/portfolio/${item.slug}` })) }} />
 
-      <Section title="Project case studies" intro="A focused selection of development work across WordPress, Next.js, professional profiles, service websites, and client-specific content systems. New projects can be added through the built-in CMS without changing the page code.">
+      <StructuredData
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Website portfolio and case studies",
+          itemListElement: allItems.map((item, index) => ({
+            "@type": "ListItem",
+            position: index + 1,
+            name: item.name,
+            url: `${siteUrl}/portfolio/${item.slug}`,
+          })),
+        }}
+      />
+
+      <Section
+        title="Project case studies"
+        intro="A focused selection of development work across WordPress, Next.js, professional profiles, service websites, and client-specific content systems. New projects can be added through the built-in CMS without changing the page code."
+      >
         <div className="grid gap-7 md:grid-cols-2">
           {projects.map((project, index) => (
-            <article key={project.slug} className="surface-panel animated-card overflow-hidden !p-0">
-              <Link href={`/portfolio/${project.slug}`} className="block overflow-hidden bg-slate-100 dark:bg-slate-950">
-                <Image src={project.image} alt={project.alt} width={project.width} height={project.height} sizes="(max-width: 767px) 100vw, 600px" className="h-auto w-full border-b border-slate-200 transition duration-700 hover:scale-[1.02] dark:border-slate-700" />
+            <article
+              key={project.slug}
+              className="surface-panel animated-card overflow-hidden !p-0"
+            >
+              <Link
+                href={`/portfolio/${project.slug}`}
+                className="block overflow-hidden bg-slate-100 dark:bg-slate-950"
+              >
+                <Image
+                  src={project.image}
+                  alt={project.alt}
+                  width={project.width}
+                  height={project.height}
+                  sizes="(max-width: 767px) 100vw, 600px"
+                  className="h-auto w-full border-b border-slate-200 transition duration-700 hover:scale-[1.02] dark:border-slate-700"
+                />
               </Link>
+
               <div className="p-6">
-                <div className="flex items-center gap-3"><span className="feature-icon !h-10 !w-10 !text-sm" aria-hidden="true"><FaTasks /></span><p className="eyebrow">{caseStudies[index].category}</p></div>
-                <h2 className="mt-4 text-2xl font-bold"><Link href={`/portfolio/${project.slug}`}>{caseStudies[index].name}</Link></h2>
-                <p className="card-copy">{caseStudies[index].summary}</p>
-                <div className="mt-5 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
-                <Link href={`/portfolio/${project.slug}`} className="text-link mt-5 inline-block">Read case study</Link>
+                <div className="flex items-center gap-3">
+                  <span
+                    className="feature-icon !h-10 !w-10 !text-sm"
+                    aria-hidden="true"
+                  >
+                    <FaTasks />
+                  </span>
+
+                  <p className="eyebrow">{caseStudies[index].category}</p>
+                </div>
+
+                <h2 className="mt-4 text-2xl font-bold">
+                  <Link href={`/portfolio/${project.slug}`}>
+                    {caseStudies[index].name}
+                  </Link>
+                </h2>
+
+                <p className="card-copy">
+                  {caseStudies[index].summary}
+                </p>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <Link
+                  href={`/portfolio/${project.slug}`}
+                  className="text-link mt-5 inline-block"
+                >
+                  Read case study
+                </Link>
               </div>
             </article>
           ))}
+
           {managedProjects.map((project) => (
-            <article key={project.slug} className="surface-panel animated-card overflow-hidden !p-0">
-              <Link href={`/portfolio/${project.slug}`} className="flex min-h-64 items-center justify-center overflow-hidden bg-slate-100 p-3 dark:bg-slate-950"><img src={project.image} alt={project.alt} title={project.title} loading="lazy" className="max-h-80 w-full object-contain transition duration-700 hover:scale-[1.03]" /></Link>
+            <article
+              key={project.slug}
+              className="surface-panel animated-card overflow-hidden !p-0"
+            >
+              <Link
+                href={`/portfolio/${project.slug}`}
+                className="flex min-h-64 items-center justify-center overflow-hidden bg-slate-100 p-3 dark:bg-slate-950"
+              >
+                <img
+                  src={project.image}
+                  alt={project.alt}
+                  title={project.title}
+                  loading="lazy"
+                  className="max-h-80 w-full object-contain transition duration-700 hover:scale-[1.03]"
+                />
+              </Link>
+
               <div className="p-6">
-                <div className="flex items-center gap-3"><span className="feature-icon !h-10 !w-10 !text-sm" aria-hidden="true"><FaTasks /></span><p className="eyebrow">{project.category}</p></div>
-                <h2 className="mt-4 text-2xl font-bold"><Link href={`/portfolio/${project.slug}`}>{project.title}</Link></h2>
+                <div className="flex items-center gap-3">
+                  <span
+                    className="feature-icon !h-10 !w-10 !text-sm"
+                    aria-hidden="true"
+                  >
+                    <FaTasks />
+                  </span>
+
+                  <p className="eyebrow">{project.category}</p>
+                </div>
+
+                <h2 className="mt-4 text-2xl font-bold">
+                  <Link href={`/portfolio/${project.slug}`}>
+                    {project.title}
+                  </Link>
+                </h2>
+
                 <p className="card-copy">{project.summary}</p>
-                <div className="mt-5 flex flex-wrap gap-2">{project.tags.map((tag) => <span key={tag} className="tag">{tag}</span>)}</div>
-                <Link href={`/portfolio/${project.slug}`} className="text-link mt-5 inline-block">Read case study</Link>
+
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tag">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <Link
+                  href={`/portfolio/${project.slug}`}
+                  className="text-link mt-5 inline-block"
+                >
+                  Read case study
+                </Link>
               </div>
             </article>
           ))}
         </div>
       </Section>
 
-      <Section title="What each case study focuses on" intro="The goal is not only to show a finished screenshot. The case studies explain the decisions that made the website useful, manageable, and ready for real client content.">
+      <Section
+        title="What each case study focuses on"
+        intro="The goal is not only to show a finished screenshot. The case studies explain the decisions that made the website useful, manageable, and ready for real client content."
+      >
         <div className="grid gap-6 md:grid-cols-3">
           {caseStudyFocus.map((item) => {
             const Icon = item.icon;
-            return <article key={item.title} className="surface-panel animated-card"><span className="feature-icon" aria-hidden="true"><Icon /></span><h3 className="mt-5 text-xl font-bold">{item.title}</h3><p className="card-copy">{item.text}</p></article>;
+
+            return (
+              <article
+                key={item.title}
+                className="surface-panel animated-card"
+              >
+                <span className="feature-icon" aria-hidden="true">
+                  <Icon />
+                </span>
+
+                <h3 className="mt-5 text-xl font-bold">
+                  {item.title}
+                </h3>
+
+                <p className="card-copy">
+                  {item.text}
+                </p>
+              </article>
+            );
           })}
         </div>
       </Section>
-      <ProjectCta title="Have a similar project in mind?" text="Share the reference, current website, or project requirement. I can help identify the right structure, CMS approach, development scope, and quality checks before implementation begins." />
+
+      <ProjectCta
+        title="Have a similar project in mind?"
+        text="Share the reference, current website, or project requirement. I can help identify the right structure, CMS approach, development scope, and quality checks before implementation begins."
+      />
     </>
   );
 }
