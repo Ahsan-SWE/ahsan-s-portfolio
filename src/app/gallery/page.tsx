@@ -1,14 +1,33 @@
 import { GalleryGrid } from "@/components/pages/gallery-grid";
-import { PageHero, ProjectCta, Section } from "@/components/pages/page-shell";
+import {
+  PageHero,
+  ProjectCta,
+  Section,
+} from "@/components/pages/page-shell";
 import { StructuredData } from "@/components/seo/json-ld";
-import galleryContent from "@/content/gallery.json";
+import galleryContentJson from "@/content/gallery.json";
 import { pageMetadata } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
-const galleryItems = galleryContent.map((item) => ({
-  ...item,
-  keywords: Array.isArray(item.keywords) ? item.keywords : [],
-}));
+type GalleryItem = {
+  title: string;
+  image: string;
+  alt: string;
+  description: string;
+  caption: string;
+  keywords: string[];
+};
+
+const galleryContent =
+  galleryContentJson as GalleryItem[];
+
+const galleryItems: GalleryItem[] =
+  galleryContent.map((item) => ({
+    ...item,
+    keywords: Array.isArray(item.keywords)
+      ? item.keywords
+      : [],
+  }));
 
 export const metadata = pageMetadata(
   "Image Gallery of Ahsanul Haque Chowdhury",
@@ -50,7 +69,15 @@ export default function GalleryPage() {
         title="Image Gallery of Ahsanul Haque Chowdhury"
         intro="This gallery brings together selected images that reflect his experience in software development, WordPress, SEO, digital projects, and professional growth. Each photo offers a closer look at the people, places, and moments connected to his work and development."
       >
-        <GalleryGrid items={galleryItems} />
+        {galleryItems.length > 0 ? (
+          <GalleryGrid items={galleryItems} />
+        ) : (
+          <div className="surface-panel text-center">
+            <p className="text-slate-600 dark:text-slate-300">
+              No gallery images have been published yet.
+            </p>
+          </div>
+        )}
       </Section>
 
       <ProjectCta
