@@ -21,7 +21,7 @@ const aboutPageContent = {
   imageAlt:
     "Ahsanul Haque Chowdhury, software developer and SEO specialist in Dhaka",
   basedIn: "Uttara, Dhaka, Bangladesh",
-  currentRole: "Senior Executive Software Development",
+  currentRole: "Senior Executive Software Development At Aan-Nahl Software",
   focus: "Frontend, WordPress, SEO, ORM",
 } as const;
 
