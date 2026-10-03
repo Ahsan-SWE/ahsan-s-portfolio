@@ -17,8 +17,7 @@ export const siteConfig = {
   },
   company: "Aan-Nahl Software",
   university: "Daffodil International University",
-  resume:
-    "https://drive.google.com/uc?export=download&id=1NOWIHK20Vp7q-xfOaAP-apKsoSBUvpbW",
+  resume: "/resume/Ahsanul-Haque-Chowdhury.pdf",
   image: "/images/profile-image.webp",
   logo: "/images/logo.webp",
   social: {
