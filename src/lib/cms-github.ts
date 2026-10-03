@@ -340,18 +340,51 @@ export async function deleteCmsImage(
   return true;
 }
 
-function uploadedImages(items: CmsItem[]) {
-  return new Set(
-    items
-      .map((item) =>
-        typeof item.image === "string"
-          ? item.image
-          : "",
+function uploadedImages(
+  items: CmsItem[],
+) {
+  const images =
+    new Set<string>();
+
+  for (const item of items) {
+    const mainImage =
+      typeof item.image ===
+      "string"
+        ? item.image.trim()
+        : "";
+
+    if (
+      mainImage.startsWith(
+        "/uploads/",
       )
-      .filter((image) =>
-        image.startsWith("/uploads/"),
-      ),
-  );
+    ) {
+      images.add(mainImage);
+    }
+
+    const content =
+      typeof item.content ===
+      "string"
+        ? item.content
+        : "";
+
+    const inlineImages =
+      content.matchAll(
+        /!\[[^\]]*\]\((\/uploads\/[^\s)"']+)(?:\s+"[^"]*")?\)/g,
+      );
+
+    for (
+      const match of inlineImages
+    ) {
+      const image =
+        match[1];
+
+      if (image) {
+        images.add(image);
+      }
+    }
+  }
+
+  return images;
 }
 
 export async function publishCmsCollection(
