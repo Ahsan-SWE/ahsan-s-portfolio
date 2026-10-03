@@ -1,12 +1,10 @@
 [
   {
-    "title": "Photodzfsdg",
-    "image": "/uploads/photo.jpg",
-    "alt": "Photozdvgdgv",
-    "description": "dgvgd",
-    "caption": "Photodgvd",
-    "keywords": [
-      "dgd"
-    ]
+    "title": "Gig Image",
+    "image": "/uploads/gig image-2.jpg",
+    "alt": "Gig Image",
+    "description": "Gig Image",
+    "caption": "Gig Image",
+    "keywords": []
   }
 ]
