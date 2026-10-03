@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "title": "How Technical SEO and Website Performance Work Together",
+    "slug": "how-technical-seo-and-website-performance-work-together",
+    "excerpt": "Technical SEO and website performance support each other. A fast, accessible, well-structured website can improve search visibility while creating a better experience for visitors.",
+    "date": "2026-10-03",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/How Technical SEO and Website Performance Work Together.jpg",
+    "imageAlt": "",
+    "imageTitle": "",
+    "metaTitle": "How Technical SEO and Website Performance Work Together",
+    "metaDescription": "Learn how technical SEO, Core Web Vitals, site speed, structured content, and frontend performance work together to strengthen websites.",
+    "tags": [
+      "Technical SEO",
+      "Website Performance",
+      "Core Web Vitals",
+      "Frontend Development",
+      "SEO"
+    ],
+    "content": "Technical SEO and website performance are closely connected. A website may have useful content and a strong visual design, but technical problems can still make it difficult for search engines and visitors to use the site effectively. Slow loading, poor mobile behavior, broken internal links, unnecessary scripts, and weak page structure can all affect the overall quality of a website.\n\nFor this reason, I approach website performance as part of the SEO process rather than treating the two areas separately. A technically healthy website gives search engines a clearer structure to understand and gives users a faster and more reliable experience.\n\nPage Speed and User Experience\n\nWebsite speed affects how visitors interact with a page. When a site takes too long to load, users may leave before seeing the main content. Large images, unnecessary JavaScript, poorly optimized fonts, and heavy third-party scripts can increase loading time.\nFrontend optimization can reduce many of these problems. Compressing images, using responsive image sizes, reducing unused code, and loading resources efficiently can make a noticeable difference. In projects built with WordPress, React, or Next.js, the exact optimization process may differ, but the goal remains the same: deliver useful content quickly.\n\nCore Web Vitals\n\nCore Web Vitals provide useful signals for evaluating real user experience. They focus on areas such as loading performance, responsiveness, and visual stability.\n\nImproving these metrics often requires both development and SEO knowledge. For example, layout shifts may come from images without defined dimensions, while slow loading can result from oversized media or inefficient scripts. Fixing these problems improves the technical quality of the website while also supporting search performance.\n\nMobile Performance Matters\n\nA website should work well across different screen sizes. Mobile users often access websites through slower networks or less powerful devices, so unnecessary animation, large assets, and complex scripts can have a stronger impact.\n\nResponsive development is therefore an important part of technical SEO. Navigation should remain usable, text should be readable, buttons should be easy to interact with, and important content should not depend on desktop-only functionality.\n\nClean Website Structure\n\nSearch engines benefit from websites that have clear navigation and logical content organization. Proper headings, useful internal links, descriptive URLs, metadata, canonical tags, and structured data can help explain what each page is about.\n\nA clean technical structure also makes websites easier to maintain. When content, components, and templates follow a consistent system, future updates become safer and more efficient.\n\nTechnical SEO Is an Ongoing Process\n\nWebsite optimization does not end after launch. New content, plugins, scripts, images, and design changes can affect performance over time. Regular testing helps identify issues before they become larger problems.\n\nI use a combination of frontend development, WordPress management, technical SEO, and performance optimization when reviewing websites. The goal is not simply to achieve a better score in a testing tool. The goal is to create a website that loads efficiently, works reliably, remains accessible, and gives search engines a clear understanding of its content."
+  }
+]
