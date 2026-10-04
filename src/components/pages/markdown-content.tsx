@@ -1,7 +1,14 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
-import type { ReactNode } from "react";
+
+import {
+  type ReactNode,
+  useMemo,
+  useState,
+} from "react";
 
 type MarkdownBlock =
   | {
@@ -35,31 +42,74 @@ type MarkdownBlock =
       caption: string;
     };
 
-function renderInline(text: string): ReactNode[] {
-  const parts: ReactNode[] = [];
+const RAW_GITHUB_BASE =
+  "https://raw.githubusercontent.com/Ahsan-SWE/ahsan-s-portfolio/main/public";
+
+function renderInline(
+  text: string,
+): ReactNode[] {
+  const parts: ReactNode[] =
+    [];
 
   const regex =
-    /(\[([^\]]+)\]\(((?:https?:\/\/|\/|#|mailto:|tel:)[^\s)]+)\)|\*\*([^*]+)\*\*|\*([^*\n]+)\*|_([^_\n]+)_|`([^`]+)`)/g;
+    /(\[([^\]]+)\]\(((?:https?:\/\/|\/|#|mailto:|tel:)[^\s)]+)\)|\*\*([^*\n]+)\*\*|\*([^*\n]+)\*|_([^_\n]+)_|`([^`\n]+)`)/g;
 
   let cursor = 0;
-  let match: RegExpExecArray | null;
+
+  let match:
+    | RegExpExecArray
+    | null;
+
   let key = 0;
 
-  while ((match = regex.exec(text)) !== null) {
-    if (match.index > cursor) {
-      parts.push(text.slice(cursor, match.index));
+  while (
+    (match =
+      regex.exec(
+        text,
+      )) !== null
+  ) {
+    if (
+      match.index >
+      cursor
+    ) {
+      parts.push(
+        text.slice(
+          cursor,
+          match.index,
+        ),
+      );
     }
 
-    const full = match[0];
-    const linkLabel = match[2];
-    const href = match[3];
-    const bold = match[4];
-    const italicStar = match[5];
-    const italicUnderscore = match[6];
-    const code = match[7];
+    const full =
+      match[0];
 
-    if (linkLabel && href) {
-      if (href.startsWith("/")) {
+    const linkLabel =
+      match[2];
+
+    const href =
+      match[3];
+
+    const bold =
+      match[4];
+
+    const italicStar =
+      match[5];
+
+    const italicUnderscore =
+      match[6];
+
+    const code =
+      match[7];
+
+    if (
+      linkLabel &&
+      href
+    ) {
+      if (
+        href.startsWith(
+          "/",
+        )
+      ) {
         parts.push(
           <Link
             key={`link-${key++}`}
@@ -70,8 +120,12 @@ function renderInline(text: string): ReactNode[] {
           </Link>,
         );
       } else if (
-        href.startsWith("http://") ||
-        href.startsWith("https://")
+        href.startsWith(
+          "http://",
+        ) ||
+        href.startsWith(
+          "https://",
+        )
       ) {
         parts.push(
           <a
@@ -95,19 +149,31 @@ function renderInline(text: string): ReactNode[] {
           </a>,
         );
       }
-    } else if (bold) {
+    } else if (
+      bold
+    ) {
       parts.push(
-        <strong key={`strong-${key++}`}>
+        <strong
+          key={`strong-${key++}`}
+        >
           {bold}
         </strong>,
       );
-    } else if (italicStar || italicUnderscore) {
+    } else if (
+      italicStar ||
+      italicUnderscore
+    ) {
       parts.push(
-        <em key={`em-${key++}`}>
-          {italicStar || italicUnderscore}
+        <em
+          key={`em-${key++}`}
+        >
+          {italicStar ||
+            italicUnderscore}
         </em>,
       );
-    } else if (code) {
+    } else if (
+      code
+    ) {
       parts.push(
         <code
           key={`code-${key++}`}
@@ -117,70 +183,191 @@ function renderInline(text: string): ReactNode[] {
         </code>,
       );
     } else {
-      parts.push(full);
+      parts.push(
+        full,
+      );
     }
 
-    cursor = regex.lastIndex;
+    cursor =
+      regex.lastIndex;
   }
 
-  if (cursor < text.length) {
-    parts.push(text.slice(cursor));
+  if (
+    cursor <
+    text.length
+  ) {
+    parts.push(
+      text.slice(
+        cursor,
+      ),
+    );
   }
 
   return parts;
 }
 
-function imageFromLine(line: string) {
-  const match = line
-    .trim()
-    .match(
-      /^!\[([^\]]*)\]\((\S+?)(?:\s+"([^"]*)")?\)$/,
+function parseImageLine(
+  line: string,
+) {
+  const trimmed =
+    line.trim();
+
+  const match =
+    trimmed.match(
+      /^!\[([^\]]*)\]\(([\s\S]+)\)$/,
     );
 
   if (!match) {
     return null;
   }
 
+  const alt =
+    match[1].trim();
+
+  let inner =
+    match[2].trim();
+
+  if (!inner) {
+    return null;
+  }
+
+  let caption =
+    "";
+
+  const titleMatch =
+    inner.match(
+      /^(.*)\s+"([^"]*)"$/,
+    );
+
+  if (titleMatch) {
+    inner =
+      titleMatch[1].trim();
+
+    caption =
+      titleMatch[2].trim();
+  }
+
+  if (
+    inner.startsWith(
+      "<",
+    ) &&
+    inner.endsWith(
+      ">",
+    )
+  ) {
+    inner =
+      inner
+        .slice(
+          1,
+          -1,
+        )
+        .trim();
+  }
+
+  const validSource =
+    inner.startsWith(
+      "/",
+    ) ||
+    inner.startsWith(
+      "https://",
+    ) ||
+    inner.startsWith(
+      "http://",
+    );
+
+  if (!validSource) {
+    return null;
+  }
+
   return {
-    alt: match[1].trim(),
-    src: match[2].trim(),
-    caption: match[3]?.trim() || "",
+    alt,
+    src: inner,
+    caption,
   };
 }
 
-function isBlockStart(line: string) {
-  const trimmed = line.trim();
+function isBlockStart(
+  line: string,
+) {
+  const trimmed =
+    line.trim();
 
   return (
-    /^#{1,3}\s+/.test(trimmed) ||
-    /^[-*]\s+/.test(trimmed) ||
-    /^\d+\.\s+/.test(trimmed) ||
-    /^>\s?/.test(trimmed) ||
-    Boolean(imageFromLine(trimmed))
+    /^#{1,3}\s+/.test(
+      trimmed,
+    ) ||
+    /^[-*+]\s+/.test(
+      trimmed,
+    ) ||
+    /^\d+\.\s+/.test(
+      trimmed,
+    ) ||
+    /^>\s?/.test(
+      trimmed,
+    ) ||
+    Boolean(
+      parseImageLine(
+        trimmed,
+      ),
+    )
   );
+}
+
+function nextNonEmptyLine(
+  lines: string[],
+  start: number,
+) {
+  let index =
+    start;
+
+  while (
+    index <
+      lines.length &&
+    !lines[
+      index
+    ].trim()
+  ) {
+    index += 1;
+  }
+
+  return index;
 }
 
 function parseMarkdown(
   content: string,
 ): MarkdownBlock[] {
-  const lines = content
-    .replace(/\r\n/g, "\n")
-    .split("\n");
+  const lines =
+    content
+      .replace(
+        /\r\n/g,
+        "\n",
+      )
+      .split("\n");
 
-  const blocks: MarkdownBlock[] = [];
+  const blocks:
+    MarkdownBlock[] =
+    [];
 
   let index = 0;
 
-  while (index < lines.length) {
-    const line = lines[index];
-    const trimmed = line.trim();
+  while (
+    index <
+    lines.length
+  ) {
+    const trimmed =
+      lines[
+        index
+      ].trim();
 
     if (!trimmed) {
       index += 1;
       continue;
     }
 
-    const image = imageFromLine(trimmed);
+    const image =
+      parseImageLine(
+        trimmed,
+      );
 
     if (image) {
       blocks.push({
@@ -192,10 +379,17 @@ function parseMarkdown(
       continue;
     }
 
-    if (trimmed.startsWith("### ")) {
+    if (
+      trimmed.startsWith(
+        "### ",
+      )
+    ) {
       blocks.push({
         type: "h3",
-        text: trimmed.slice(4),
+        text:
+          trimmed.slice(
+            4,
+          ),
       });
 
       index += 1;
@@ -203,40 +397,83 @@ function parseMarkdown(
     }
 
     if (
-      trimmed.startsWith("## ") ||
-      trimmed.startsWith("# ")
+      trimmed.startsWith(
+        "## ",
+      ) ||
+      trimmed.startsWith(
+        "# ",
+      )
     ) {
       blocks.push({
         type: "h2",
-        text: trimmed.replace(
-          /^#{1,2}\s+/,
-          "",
-        ),
+        text:
+          trimmed.replace(
+            /^#{1,2}\s+/,
+            "",
+          ),
       });
 
       index += 1;
       continue;
     }
 
-    if (/^[-*]\s+/.test(trimmed)) {
-      const items: string[] = [];
+    if (
+      /^[-*+]\s+/.test(
+        trimmed,
+      )
+    ) {
+      const items:
+        string[] = [];
 
       while (
-        index < lines.length &&
-        /^[-*]\s+/.test(
-          lines[index].trim(),
-        )
+        index <
+        lines.length
       ) {
-        items.push(
-          lines[index]
-            .trim()
-            .replace(
-              /^[-*]\s+/,
+        const current =
+          lines[
+            index
+          ].trim();
+
+        if (
+          /^[-*+]\s+/.test(
+            current,
+          )
+        ) {
+          items.push(
+            current.replace(
+              /^[-*+]\s+/,
               "",
             ),
-        );
+          );
 
-        index += 1;
+          index += 1;
+          continue;
+        }
+
+        if (!current) {
+          const nextIndex =
+            nextNonEmptyLine(
+              lines,
+              index + 1,
+            );
+
+          if (
+            nextIndex <
+              lines.length &&
+            /^[-*+]\s+/.test(
+              lines[
+                nextIndex
+              ].trim(),
+            )
+          ) {
+            index =
+              nextIndex;
+
+            continue;
+          }
+        }
+
+        break;
       }
 
       blocks.push({
@@ -247,25 +484,63 @@ function parseMarkdown(
       continue;
     }
 
-    if (/^\d+\.\s+/.test(trimmed)) {
-      const items: string[] = [];
+    if (
+      /^\d+\.\s+/.test(
+        trimmed,
+      )
+    ) {
+      const items:
+        string[] = [];
 
       while (
-        index < lines.length &&
-        /^\d+\.\s+/.test(
-          lines[index].trim(),
-        )
+        index <
+        lines.length
       ) {
-        items.push(
-          lines[index]
-            .trim()
-            .replace(
+        const current =
+          lines[
+            index
+          ].trim();
+
+        if (
+          /^\d+\.\s+/.test(
+            current,
+          )
+        ) {
+          items.push(
+            current.replace(
               /^\d+\.\s+/,
               "",
             ),
-        );
+          );
 
-        index += 1;
+          index += 1;
+          continue;
+        }
+
+        if (!current) {
+          const nextIndex =
+            nextNonEmptyLine(
+              lines,
+              index + 1,
+            );
+
+          if (
+            nextIndex <
+              lines.length &&
+            /^\d+\.\s+/.test(
+              lines[
+                nextIndex
+              ].trim(),
+            )
+          ) {
+            index =
+              nextIndex;
+
+            continue;
+          }
+        }
+
+        break;
       }
 
       blocks.push({
@@ -276,17 +551,27 @@ function parseMarkdown(
       continue;
     }
 
-    if (/^>\s?/.test(trimmed)) {
-      const quoteLines: string[] = [];
+    if (
+      /^>\s?/.test(
+        trimmed,
+      )
+    ) {
+      const quoteLines:
+        string[] = [];
 
       while (
-        index < lines.length &&
+        index <
+          lines.length &&
         /^>\s?/.test(
-          lines[index].trim(),
+          lines[
+            index
+          ].trim(),
         )
       ) {
         quoteLines.push(
-          lines[index]
+          lines[
+            index
+          ]
             .trim()
             .replace(
               /^>\s?/,
@@ -299,40 +584,180 @@ function parseMarkdown(
 
       blocks.push({
         type: "quote",
-        text: quoteLines.join(" "),
+        text:
+          quoteLines.join(
+            " ",
+          ),
       });
 
       continue;
     }
 
-    const paragraph: string[] = [
+    const paragraph:
+      string[] = [
       trimmed,
     ];
 
     index += 1;
 
-    while (index < lines.length) {
+    while (
+      index <
+      lines.length
+    ) {
       const next =
-        lines[index].trim();
+        lines[
+          index
+        ].trim();
 
       if (
         !next ||
-        isBlockStart(next)
+        isBlockStart(
+          next,
+        )
       ) {
         break;
       }
 
-      paragraph.push(next);
+      paragraph.push(
+        next,
+      );
+
       index += 1;
     }
 
     blocks.push({
       type: "paragraph",
-      text: paragraph.join(" "),
+      text:
+        paragraph.join(
+          " ",
+        ),
     });
   }
 
   return blocks;
+}
+
+function browserImageSource(
+  src: string,
+) {
+  return src.replace(
+    / /g,
+    "%20",
+  );
+}
+
+function imageCandidates(
+  src: string,
+) {
+  const encoded =
+    browserImageSource(
+      src,
+    );
+
+  if (
+    !src.startsWith(
+      "/uploads/",
+    )
+  ) {
+    return [
+      encoded,
+    ];
+  }
+
+  return [
+    encoded,
+    `${RAW_GITHUB_BASE}${encoded}`,
+  ];
+}
+
+function MarkdownImage({
+  src,
+  alt,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+}) {
+  const candidates =
+    useMemo(
+      () =>
+        imageCandidates(
+          src,
+        ),
+      [src],
+    );
+
+  const [
+    candidateIndex,
+    setCandidateIndex,
+  ] = useState(0);
+
+  const [failed, setFailed] =
+    useState(false);
+
+  const currentSrc =
+    candidates[
+      Math.min(
+        candidateIndex,
+        candidates.length -
+          1,
+      )
+    ];
+
+  if (failed) {
+    return (
+      <div className="my-8 rounded-2xl border border-red-300 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
+        Image could not be loaded:{" "}
+        {src}
+      </div>
+    );
+  }
+
+  return (
+    <figure className="my-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-950">
+      <img
+        src={
+          currentSrc
+        }
+        alt={alt}
+        title={
+          caption ||
+          undefined
+        }
+        loading="lazy"
+        decoding="async"
+        onError={() => {
+          setCandidateIndex(
+            (current) => {
+              if (
+                current <
+                candidates.length -
+                  1
+              ) {
+                return (
+                  current + 1
+                );
+              }
+
+              setFailed(
+                true,
+              );
+
+              return current;
+            },
+          );
+        }}
+        className="mx-auto max-h-[680px] w-full rounded-xl object-contain"
+      />
+
+      {caption ? (
+        <figcaption className="px-3 pb-1 pt-4 text-center text-sm text-slate-600 dark:text-slate-300">
+          {caption}
+        </figcaption>
+      ) : null}
+    </figure>
+  );
 }
 
 export function MarkdownContent({
@@ -341,16 +766,26 @@ export function MarkdownContent({
   content: string;
 }) {
   const blocks =
-    parseMarkdown(content);
+    parseMarkdown(
+      content,
+    );
 
   return (
     <div className="reading-copy max-w-none">
       {blocks.map(
-        (block, index) => {
-          if (block.type === "h2") {
+        (
+          block,
+          index,
+        ) => {
+          if (
+            block.type ===
+            "h2"
+          ) {
             return (
               <h2
-                key={index}
+                key={
+                  index
+                }
                 className="scroll-mt-28"
               >
                 {renderInline(
@@ -360,10 +795,15 @@ export function MarkdownContent({
             );
           }
 
-          if (block.type === "h3") {
+          if (
+            block.type ===
+            "h3"
+          ) {
             return (
               <h3
-                key={index}
+                key={
+                  index
+                }
                 className="scroll-mt-28"
               >
                 {renderInline(
@@ -373,10 +813,15 @@ export function MarkdownContent({
             );
           }
 
-          if (block.type === "ul") {
+          if (
+            block.type ===
+            "ul"
+          ) {
             return (
               <ul
-                key={index}
+                key={
+                  index
+                }
                 className="my-6 list-disc space-y-2 pl-6"
               >
                 {block.items.map(
@@ -385,9 +830,7 @@ export function MarkdownContent({
                     itemIndex,
                   ) => (
                     <li
-                      key={
-                        itemIndex
-                      }
+                      key={`${itemIndex}-${item}`}
                     >
                       {renderInline(
                         item,
@@ -399,11 +842,16 @@ export function MarkdownContent({
             );
           }
 
-          if (block.type === "ol") {
+          if (
+            block.type ===
+            "ol"
+          ) {
             return (
               <ol
-                key={index}
-                className="my-6 list-decimal space-y-2 pl-6"
+                key={
+                  index
+                }
+                className="my-6 list-decimal space-y-3 pl-6"
               >
                 {block.items.map(
                   (
@@ -411,9 +859,7 @@ export function MarkdownContent({
                     itemIndex,
                   ) => (
                     <li
-                      key={
-                        itemIndex
-                      }
+                      key={`${itemIndex}-${item}`}
                     >
                       {renderInline(
                         item,
@@ -425,10 +871,15 @@ export function MarkdownContent({
             );
           }
 
-          if (block.type === "quote") {
+          if (
+            block.type ===
+            "quote"
+          ) {
             return (
               <blockquote
-                key={index}
+                key={
+                  index
+                }
                 className="my-7 border-l-4 border-blue-500 bg-slate-50 px-5 py-4 italic text-slate-700 dark:bg-slate-900 dark:text-slate-200"
               >
                 {renderInline(
@@ -438,37 +889,32 @@ export function MarkdownContent({
             );
           }
 
-          if (block.type === "image") {
+          if (
+            block.type ===
+            "image"
+          ) {
             return (
-              <figure
-                key={index}
-                className="my-8 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-950"
-              >
-                <img
-                  src={block.src}
-                  alt={block.alt}
-                  title={
-                    block.caption ||
-                    undefined
-                  }
-                  loading="lazy"
-                  decoding="async"
-                  className="mx-auto max-h-[620px] w-full rounded-xl object-contain"
-                />
-
-                {block.caption ? (
-                  <figcaption className="px-3 pb-1 pt-4 text-center text-sm text-slate-600 dark:text-slate-300">
-                    {
-                      block.caption
-                    }
-                  </figcaption>
-                ) : null}
-              </figure>
+              <MarkdownImage
+                key={`${block.src}-${index}`}
+                src={
+                  block.src
+                }
+                alt={
+                  block.alt
+                }
+                caption={
+                  block.caption
+                }
+              />
             );
           }
 
           return (
-            <p key={index}>
+            <p
+              key={
+                index
+              }
+            >
               {renderInline(
                 block.text,
               )}
