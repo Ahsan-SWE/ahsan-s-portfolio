@@ -1,23 +1,5 @@
 [
   {
-    "title": "new blog post testing fhbfg",
-    "slug": "new-blog-post-testing-fhbfg",
-    "excerpt": "Excerpt testing",
-    "date": "2026-10-04",
-    "author": "Ahsanul Haque Chowdhury",
-    "image": "/uploads/gig photo-2.jpg",
-    "imageAlt": "Image alt text",
-    "imageTitle": "Image title",
-    "metaTitle": "SEO title",
-    "metaDescription": "Meta description",
-    "tags": [
-      "ZCzxv",
-      "dfv sdg",
-      "dgvsxg"
-    ],
-    "content": "## h2 test\n### h3 test\n\n\n![shared image](/uploads/shared image-3.jfif \"xdfgdrgt\")\n\n\n**bold testing**\n*italic *testing\n[link testing](https://sdfvsdg.com) kortesi akohn\n- bule 1\n- bulet 2\n- bulet 3\n\n\n![my signature](/uploads/my signature-7.jpg \"dfggf\")\n\n\n1. numbering 1\n2. number 2\n3. number 3\n\n\n> quote \n\ntesting\n\n\n![gig image](/uploads/gig image-5.jpg \"dfghdfh\")"
-  },
-  {
     "title": "new blog post testing",
     "slug": "new-blog-post-testing",
     "excerpt": "Technical SEO and website performance support each other. A fast, accessible, well-structured website can improve search visibility while creating a better experience for visitors.",
