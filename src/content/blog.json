@@ -1,29 +1,11 @@
 [
   {
-    "title": "last testing",
-    "slug": "last-testing",
-    "excerpt": "rdgdfg",
-    "date": "2026-10-04",
-    "author": "Ahsanul Haque Chowdhury",
-    "image": "/uploads/gig photo-3.jpg",
-    "imageAlt": "dfgdfh",
-    "imageTitle": "hdh",
-    "metaTitle": "sdfgdg",
-    "metaDescription": "dgfdg",
-    "tags": [
-      "dg",
-      "dfgfh",
-      "szdg"
-    ],
-    "content": "## h2\n\n\n![gig image](/uploads/gig image-7.jpg \"sdfsdg\")\n\n\n### h3\n**bold**\n*italic*\n\n\n![my signature](/uploads/my signature-9.jpg \"dfgvdfg\")\n\n\n[link](https://cfgfh.com)\n- bulet 1\n- bulet 2\n- bulet 3\ntitle akta boro\n1. number 1\n2. number 2\n3. number 3\n\n\n![shared image](/uploads/shared image-4.jfif \"zxscfdfg\")\n\n> quote one ami test kortesi\n\n\n"
-  },
-  {
-    "title": "new blog post testing sdgdfgvcfg",
+    "title": "new blog post testing sdgdfgvcfg last test",
     "slug": "new-blog-post-testing-sdgdfgvcfg",
     "excerpt": "bale ikjasnd",
     "date": "2026-10-04",
     "author": "Ahsanul Haque Chowdhury",
-    "image": "/uploads/gig photo-1.jpg",
+    "image": "/uploads/gig photo-4.jpg",
     "imageAlt": "dfgvdfgb",
     "imageTitle": "dfgvdfgb",
     "metaTitle": "dfgdfgv",
@@ -33,7 +15,7 @@
       "dfgv",
       "gfd"
     ],
-    "content": "## h2 test\n\n![sdfsdf](/uploads/gig image-6.jpg \"zsdfvsdfg\")\n\n### h3 test\n\n**bold test**\n*itsli*\n\n- bulet 1\n- bulet 2\n- bulet 3\n\n![fcgd](/uploads/my signature-8.jpg \"xfgv\")\n\n1. numbering 1\n2. numbering 2\n3. numbering 3\n\n![drgd](/uploads/signature of ahsan-2.jpg \"dfg\")\n\n> quote testing\n\n[link testing](https://sdfsdf.com)"
+    "content": "## h2 test\n\n\n![gig image](/uploads/gig image-8.jpg \"sdg\")\n\n### h3 test\n\n**bold test**\n*itsli*\n\n\n![my signature](/uploads/my signature-10.jpg \"sdfdsfv\")\n\n\n- bulet 1\n- bulet 2\n- bulet 3\n\n![b&w image](/uploads/b&w image-1.png \"dfsdf\")\n\n1. numbering 1\n2. numbering 2\n3. numbering 3\n\n\n\n> quote testing\n\n[link testing](https://sdfsdf.com)"
   },
   {
     "title": "new blog post testing fhbfg",
