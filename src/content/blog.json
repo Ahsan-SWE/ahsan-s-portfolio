@@ -1,1 +1,19 @@
-[]
+[
+  {
+    "title": "Testing Automatic CMS Deployment for Blog Updates",
+    "slug": "testing-automatic-cms-deployment-for-blog-updates",
+    "excerpt": "This test post checks whether the CMS can publish content to GitHub, trigger a Vercel deployment, update the live blog, and remove the post after deletion.",
+    "date": "2026-10-04",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/gig photo-1.jpg",
+    "imageAlt": "ZFcsdf",
+    "imageTitle": "sdgdfhg",
+    "metaTitle": "Testing Automatic CMS Deployment for Blog Updates",
+    "metaDescription": "A test post for checking automatic GitHub commits, Vercel deployments, live blog updates, editing, and deletion from the portfolio CMS.",
+    "tags": [
+      "fhtfh",
+      "dfhfgh"
+    ],
+    "content": "## Testing the CMS Publishing Workflow\n\n[This blog post is being](https://facebook.com) published as a practical test of the content management system. The goal is to confirm that a new blog post can be created from the admin dashboard, committed automatically to GitHub, and deployed to the live website through Vercel.\n\n\n![gig image](/uploads/gig image-1.jpg \"sfcdsf\")\n\n\n> The complete workflow should happen without using manual Git commands after the CMS is properly configured.\n\n### What This Test Should Confirm\n\nThis test should verify several important parts of the publishing process.\n\n- The post appears in the CMS after publishing\n- The blog data is updated in GitHub\n- A new Vercel production deployment is triggered\n- The post appears on the live blog page\n- The individual blog post URL works correctly\n\nIf all of these steps work, the publishing workflow is functioning as expected.\n\n## Testing Content Formatting\n\n\n![my signature](/uploads/my signature-11.jpg \"zsfcdzsf\")\n\n\nThis section checks whether the blog renderer handles common formatting correctly.\n\n**This sentence is bold text.**\n\n*This sentence is italic text.*\n\nThe CMS should preserve this formatting after the post is committed and deployed.\n\n### Testing Lists\n\nThe following bullet list is included for testing:\n\n- Frontend development\n- Technical SEO\n- WordPress management\n- Website performance\n- Online reputation management\n\n\n![signature of ahsan](/uploads/signature of ahsan-4.jpg \"asdff\")\n\n\nThe following numbered list should also display correctly:\n\n1. Publish the post\n2. Check the GitHub commit\n3. Check the Vercel deployment\n4. Open the live blog\n5. Delete the test post\n\n## Testing Links\n\nA blog post may also include external links.\n\nYou can visit [Google Search Central](https://developers.google.com/search) as an example external link.\n\nThe link should remain clickable after the article is published.\n\n### Testing a Quote\n\n> A reliable CMS should make routine content publishing simple, repeatable, and easy to verify.\n\nThis blockquote is included to confirm that quote formatting works correctly on the individual blog page.\n\n## Testing Automatic Deployment\n\n- After this post is published, the CMS should update the blog JSON file in the GitHub repository.\n- The publishing API should then trigger the configured Vercel Deploy Hook so that a new production deployment begins automatically.\n- Once the deployment is ready, this article should appear on the live blog page without requiring a manual Git push.\n\n### Final Delete Test\n\n1. After confirming that this post appears correctly on the live website, the final step is to delete it from the CMS.\n2. The deletion should update the GitHub blog data, trigger another Vercel production deployment, and remove this post from both the main blog page and its individual URL.\n\nIf the post disappears after the deployment completes, the full create and delete workflow is working correctly."
+  }
+]
