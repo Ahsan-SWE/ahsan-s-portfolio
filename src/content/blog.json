@@ -1,5 +1,23 @@
 [
   {
+    "title": "Second CMS Live Deployment Test",
+    "slug": "second-cms-live-deployment-test",
+    "excerpt": "This second CMS test checks whether a newly published blog post automatically updates GitHub, triggers Vercel, and appears on the live website.",
+    "date": "2026-10-04",
+    "author": "Ahsanul Haque Chowdhury",
+    "image": "/uploads/my signature-12.jpg",
+    "imageAlt": "How Technical SEO and Website Performance Work Together",
+    "imageTitle": "How Technical SEO and Website Performance Work Together",
+    "metaTitle": "Second CMS Live Deployment Test",
+    "metaDescription": "This second CMS test checks whether a newly published blog post automatically updates GitHub, triggers Vercel, and appears on the live website.",
+    "tags": [
+      "cvdv",
+      "fvdv",
+      "fb"
+    ],
+    "content": "## Second CMS Deployment Test\n\nThis is a second publishing test for the portfolio CMS. The purpose of this post is to confirm that newly created content can move through the complete publishing process without requiring a manual Git push or production redeployment.\n\n\n![photo](/uploads/photo.jpg \"zdxfcdf\")\n\n\nAfter this article is published, the CMS should update the blog content stored in GitHub and trigger a new Vercel production deployment automatically.\n\n### Testing the New Publishing Flow\n\nThe publishing process should begin when the Publish Blog Post button is clicked in the admin dashboard.\n\n\n![gig image](/uploads/gig image-9.jpg \"zsxcdsad\")\n\n\nThe CMS should first save this article to the GitHub repository. After the GitHub update completes, the server should trigger the configured Vercel Deploy Hook.\n\n### Expected GitHub Update\n\n- A new entry for this article should be added to the blog JSON file in the repository.\n- The title, slug, article content, featured image, metadata, and other information should remain available after refreshing the CMS.\n\n### Expected Vercel Deployment\n\n1. Once the GitHub update is successful, the CMS should request a new production deployment from Vercel.\n2. A new deployment should appear in the Vercel dashboard without requiring any terminal command.\n\n\n![b&w image](/uploads/b&w image-2.png \"sdcsdf\")\n\n\n### Live Website Test\n\nAfter the Vercel deployment reaches the Ready state, this post should appear on the main blog page.\n\nThe individual article URL should also load correctly using the slug assigned to this post.\n\n### Deployment Status Test\n\nThe CMS should provide a clear status message after publishing.\n\n*If everything works correctly, the admin dashboard should confirm that the GitHub content was updated and the Vercel production deployment was triggered.*\n\n### Final Verification\n\nThis article is temporary and is being used only to test the automatic CMS publishing workflow.\n\nAfter confirming that it appears correctly on the live website, the post will be deleted from the CMS to verify that deletion also triggers a new production deployment and removes the article from the live site."
+  },
+  {
     "title": "Testing Automatic CMS Deployment for Blog Updates",
     "slug": "testing-automatic-cms-deployment-for-blog-updates",
     "excerpt": "This test post checks whether the CMS can publish content to GitHub, trigger a Vercel deployment, update the live blog, and remove the post after deletion.",
