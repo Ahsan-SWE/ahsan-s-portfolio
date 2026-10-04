@@ -55,7 +55,9 @@ function validate(
     }
 
     if (seenSlugs.has(slug)) {
-      throw new Error(`Duplicate slug: ${slug}`);
+      throw new Error(
+        `Duplicate slug: ${slug}`,
+      );
     }
 
     seenSlugs.add(slug);
@@ -67,6 +69,10 @@ async function triggerVercelDeployment() {
     process.env.CMS_VERCEL_DEPLOY_HOOK?.trim();
 
   if (!deployHook) {
+    console.error(
+      "[cms-publish] CMS_VERCEL_DEPLOY_HOOK is missing.",
+    );
+
     return {
       deploymentTriggered: false,
       deploymentWarning:
@@ -75,23 +81,59 @@ async function triggerVercelDeployment() {
   }
 
   try {
-    const response = await fetch(deployHook, {
+    const separator = deployHook.includes("?")
+      ? "&"
+      : "?";
+
+    const deployUrl =
+      `${deployHook}${separator}buildCache=false`;
+
+    console.log(
+      "[cms-publish] Triggering Vercel deployment.",
+    );
+
+    const response = await fetch(deployUrl, {
       method: "POST",
       cache: "no-store",
     });
 
+    const responseText =
+      await response.text();
+
     if (!response.ok) {
+      console.error(
+        "[cms-publish] Vercel deploy hook failed.",
+        {
+          status: response.status,
+          response: responseText,
+        },
+      );
+
       return {
         deploymentTriggered: false,
-        deploymentWarning: `Vercel deployment trigger failed with status ${response.status}.`,
+        deploymentWarning:
+          `Vercel deploy hook returned HTTP ${response.status}.`,
       };
     }
+
+    console.log(
+      "[cms-publish] Vercel deployment triggered successfully.",
+      {
+        status: response.status,
+        response: responseText,
+      },
+    );
 
     return {
       deploymentTriggered: true,
       deploymentWarning: null,
     };
   } catch (error) {
+    console.error(
+      "[cms-publish] Vercel deploy hook request failed.",
+      error,
+    );
+
     return {
       deploymentTriggered: false,
       deploymentWarning:
@@ -149,11 +191,32 @@ export async function POST(request: Request) {
   }
 
   try {
-    validate(body.collection, body.data);
-
-    const result = await publishCmsCollection(
+    validate(
       body.collection,
       body.data,
+    );
+
+    console.log(
+      "[cms-publish] Publishing CMS collection.",
+      {
+        collection: body.collection,
+        itemCount: body.data.length,
+      },
+    );
+
+    const result =
+      await publishCmsCollection(
+        body.collection,
+        body.data,
+      );
+
+    console.log(
+      "[cms-publish] GitHub content updated.",
+      {
+        collection: body.collection,
+        commitSha:
+          result.commitSha ?? null,
+      },
     );
 
     const deployment =
@@ -165,6 +228,11 @@ export async function POST(request: Request) {
       ...deployment,
     });
   } catch (error) {
+    console.error(
+      "[cms-publish] Publishing failed.",
+      error,
+    );
+
     return NextResponse.json(
       {
         error:

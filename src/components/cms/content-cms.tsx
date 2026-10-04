@@ -813,8 +813,11 @@ export function ContentCms() {
       );
 
     return readJson<{
+      commitSha: string | null;
       removedImages: number;
       cleanupWarnings: string[];
+      deploymentTriggered: boolean;
+      deploymentWarning: string | null;
     }>(response);
   }
 
@@ -945,12 +948,24 @@ export function ContentCms() {
         false,
       );
 
-      setStatus(
-        result.cleanupWarnings
-          .length
-          ? `Published successfully. ${result.cleanupWarnings.length} image cleanup warning(s) remain.`
-          : "Published successfully. Vercel will deploy the new content automatically.",
-      );
+      if (!result.deploymentTriggered) {
+        setStatus(
+          `Content was published to GitHub, but Vercel deployment was not triggered. ${
+            result.deploymentWarning ||
+            "Check the deploy hook configuration."
+          }`,
+        );
+      } else if (
+        result.cleanupWarnings.length
+      ) {
+        setStatus(
+          `Published successfully and deployment triggered. ${result.cleanupWarnings.length} image cleanup warning(s) remain.`,
+        );
+      } else {
+        setStatus(
+          "Published successfully. Vercel production deployment was triggered.",
+        );
+      }
     } catch (error) {
       if (uploadedImage) {
         await cleanupImage(
@@ -1060,12 +1075,24 @@ export function ContentCms() {
           current + 1,
       );
 
-      setStatus(
-        result.cleanupWarnings
-          .length
-          ? `Gallery published. ${result.cleanupWarnings.length} cleanup warning(s) remain.`
-          : `${newItems.length} gallery image(s) published successfully.`,
-      );
+      if (!result.deploymentTriggered) {
+        setStatus(
+          `Gallery was published to GitHub, but Vercel deployment was not triggered. ${
+            result.deploymentWarning ||
+            "Check the deploy hook configuration."
+          }`,
+        );
+      } else if (
+        result.cleanupWarnings.length
+      ) {
+        setStatus(
+          `Gallery published and deployment triggered. ${result.cleanupWarnings.length} cleanup warning(s) remain.`,
+        );
+      } else {
+        setStatus(
+          `${newItems.length} gallery image(s) published successfully. Vercel production deployment was triggered.`,
+        );
+      }
     } catch (error) {
       await Promise.all(
         uploadedPaths.map(
@@ -1146,12 +1173,24 @@ export function ContentCms() {
         );
       }
 
-      setStatus(
-        result.cleanupWarnings
-          .length
-          ? `Item deleted. ${result.cleanupWarnings.length} cleanup warning(s) remain.`
-          : "Item deleted and published successfully.",
-      );
+      if (!result.deploymentTriggered) {
+        setStatus(
+          `Item was deleted from GitHub, but Vercel deployment was not triggered. ${
+            result.deploymentWarning ||
+            "Check the deploy hook configuration."
+          }`,
+        );
+      } else if (
+        result.cleanupWarnings.length
+      ) {
+        setStatus(
+          `Item deleted and deployment triggered. ${result.cleanupWarnings.length} cleanup warning(s) remain.`,
+        );
+      } else {
+        setStatus(
+          "Item deleted successfully. Vercel production deployment was triggered.",
+        );
+      }
     } catch (error) {
       setStatus(
         error instanceof Error
