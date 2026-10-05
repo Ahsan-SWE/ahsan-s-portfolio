@@ -1,11 +1,11 @@
 [
   {
-    "title": "Testing Automatic CMS Deployment for Blog Updates",
+    "title": "Software Testing Automatic CMS Deployment for Blog Updates",
     "slug": "testing-automatic-cms-deployment-for-blog-updates",
     "excerpt": "This test post checks whether the CMS can publish content to GitHub, trigger a Vercel deployment, update the live blog, and remove the post after deletion.",
     "date": "2026-10-04",
     "author": "Ahsanul Haque Chowdhury",
-    "image": "/uploads/gig photo-1.jpg",
+    "image": "/uploads/gig photo-2.jpg",
     "imageAlt": "ZFcsdf",
     "imageTitle": "sdgdfhg",
     "metaTitle": "Testing Automatic CMS Deployment for Blog Updates",
