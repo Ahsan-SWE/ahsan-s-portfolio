@@ -81,21 +81,10 @@ async function triggerVercelDeployment() {
   }
 
   try {
-    const separator = deployHook.includes("?")
-      ? "&"
-      : "?";
-
-    const deployUrl =
-      `${deployHook}${separator}buildCache=false`;
-
-    console.log(
-      "[cms-publish] Triggering Vercel deployment.",
-    );
-
-    const response = await fetch(deployUrl, {
-      method: "POST",
-      cache: "no-store",
-    });
+    const response = await fetch(deployHook, {
+  method: "POST",
+  cache: "no-store",
+});
 
     const responseText =
       await response.text();
